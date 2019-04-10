@@ -29,7 +29,9 @@ purge: clean-check-env purge-mndiag purge-mrkcommon
 clean: clean-mndiag clean-mrkcommon
 
 all-init: mndiag-init mrkcommon-init
+
 all-dev: mndiag-dev mrkcommon-dev
+
 all: mndiag mrkcommon
 
 
