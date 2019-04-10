@@ -1,0 +1,28 @@
+#!/bin/sh
+do_init() {
+    autoreconf --force
+    aclocal
+    autoheader
+    autoreconf
+    automake --add-missing
+    libtoolize
+    make distclean
+    autoreconf
+    ./configure
+}
+
+
+do_dev() {
+    autoreconf --force
+    ./configure
+}
+
+
+if test "$1" = "init"
+then
+    do_init
+
+elif test "$1" = "dev"
+then
+    do_dev
+fi

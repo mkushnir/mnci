@@ -1,4 +1,4 @@
-.check-env.done=${BUILDROOT}/.check-env.done
+_check_env_done=${BUILDROOT}/.check-env.done
 
 
 R=${BUILDROOT}
@@ -39,18 +39,18 @@ all: mndiag mrkcommon
 #
 # check-env
 #
-${.check-env.done}:
+${_check_env_done}:
 	@echo "check BUILDROOT..." && \
 	    test -n "${BUILDROOT}" && \
 	    test -d "${BUILDROOT}"
 	@touch $@
 
-check-env: ${.check-env.done}
+check-env: ${_check_env_done}
 	@echo $@ done
 
 clean-check-env:
 	@echo "check BUILDROOT..." && test -n "${BUILDROOT}"
-	@rm -Rf ${.check-env.done}
+	@rm _Rf ${_check_env_done}
 
-.include "Makefile.mndiag"
-.include "Makefile.mrkcommon"
+include Makefile.mndiag
+include Makefile.mrkcommon

@@ -1,66 +1,66 @@
-.mrkcommon-fetch.done=${BUILDROOT}/.mrkcommon-fetch.done
-.mrkcommon-setup-init.done=${BUILDROOT}/.mrkcommon-setup-init.done
-.mrkcommon-setup-dev.done=${BUILDROOT}/.mrkcommon-setup-dev.done
-.mrkcommon-build.done=${BUILDROOT}/.mrkcommon-build.done
-.mrkcommon-install.done=${BUILDROOT}/.mrkcommon-install.done
-.mrkcommon-init.done=${BUILDROOT}/.mrkcommon-init.done
-.mrkcommon-dev.done=${BUILDROOT}/.mrkcommon-dev.done
-.mrkcommon.done=${BUILDROOT}/.mrkcommon.done
+_mrkcommon_fetch_done=${BUILDROOT}/.mrkcommon-fetch.done
+_mrkcommon_setup_init_done=${BUILDROOT}/.mrkcommon-setup-init.done
+_mrkcommon_setup_dev_done=${BUILDROOT}/.mrkcommon-setup-dev.done
+_mrkcommon_build_done=${BUILDROOT}/.mrkcommon-build.done
+_mrkcommon_install_done=${BUILDROOT}/.mrkcommon-install.done
+_mrkcommon_init_done=${BUILDROOT}/.mrkcommon-init.done
+_mrkcommon_dev_done=${BUILDROOT}/.mrkcommon-dev.done
+_mrkcommon_done=${BUILDROOT}/.mrkcommon.done
 
 
 #
 # mrkcommon
 #
-${.mrkcommon-fetch.done}: ${.check-env.done}
+${_mrkcommon_fetch_done}: ${_check_env_done}
 	@test -d ${R}/mrkcommon || \
 	    ( cd ${R} && git clone mkushnir@big-1:development/mrkcommon )
 	@cd ${R}/mrkcommon && git pull
-	@touch ${.mrkcommon-fetch.done}
+	@touch ${_mrkcommon_fetch_done}
 
-${.mrkcommon-setup-init.done}: ${.mrkcommon-fetch.done}
+${_mrkcommon_setup_init_done}: ${_mrkcommon_fetch_done}
 	@cd ${R}/mrkcommon && make distclean || true
 	@cd ${R}/mrkcommon && ./setup-env init
-	@touch ${.mrkcommon-setup-init.done}
+	@touch ${_mrkcommon_setup_init_done}
 
-${.mrkcommon-setup-dev.done}: ${.mrkcommon-fetch.done}
+${_mrkcommon_setup_dev_done}: ${_mrkcommon_fetch_done}
 	@cd ${R}/mrkcommon && make distclean || true
 	@cd ${R}/mrkcommon && ./setup-env dev
-	@touch ${.mrkcommon-setup-dev.done}
+	@touch ${_mrkcommon_setup_dev_done}
 
-${.mrkcommon-build.done}: ${.mrkcommon-fetch.done}
+${_mrkcommon_build_done}: ${_mrkcommon_fetch_done}
 	@cd ${R}/mrkcommon && make
-	@touch ${.mrkcommon-build.done}
+	@touch ${_mrkcommon_build_done}
 
-${.mrkcommon-install.done}: ${.mrkcommon-build.done}
+${_mrkcommon_install_done}: ${_mrkcommon_build_done}
 	@cd ${R}/mrkcommon && make install
-	@touch ${.mrkcommon-install.done}
+	@touch ${_mrkcommon_install_done}
 
-${.mrkcommon-init.done}: ${.mrkcommon-setup-init.done} ${.mrkcommon-install.done}
+${_mrkcommon_init_done}: ${_mrkcommon_setup_init_done} ${_mrkcommon_install_done}
 	@echo making $@ ...
-	@touch ${.mrkcommon-init.done}
+	@touch ${_mrkcommon_init_done}
 
-mrkcommon-init: mndiag-init ${.mrkcommon-init.done}
+mrkcommon-init: mndiag-init ${_mrkcommon_init_done}
 	@echo $@ done
 
-${.mrkcommon-dev.done}: ${.mrkcommon-setup-dev.done} ${.mrkcommon-install.done}
+${_mrkcommon_dev_done}: ${_mrkcommon_setup_dev_done} ${_mrkcommon_install_done}
 	@echo making $@ ...
-	@touch ${.mrkcommon-dev.done}
+	@touch ${_mrkcommon_dev_done}
 
-mrkcommon-dev: mndiag-dev ${.mrkcommon-dev.done}
+mrkcommon-dev: mndiag-dev ${_mrkcommon_dev_done}
 	@echo $@ done
 
-${.mrkcommon.done}: mndiag-dev ${.mrkcommon-install.done}
+${_mrkcommon_done}: mndiag-dev ${_mrkcommon_install_done}
 	@echo making $@ ...
-	@touch ${.mrkcommon.done}
+	@touch ${_mrkcommon_done}
 
-mrkcommon: ${.mrkcommon.done}
+mrkcommon: ${_mrkcommon_done}
 	@echo $@ done
 
-clean-mrkcommon: ${.check-env.done}
+clean-mrkcommon: ${_check_env_done}
 	@echo making $@
 	@cd ${R}/mrkcommon && make clean
-	@rm -Rf ${.mrkcommon-build.done}
+	@rm -Rf ${_mrkcommon_build_done}
 
 purge-mrkcommon: clean-check-env
 	@echo making $@
-	@rm -Rf "${R}/mrkcommon" ${.mrkcommon.done}
+	@rm -Rf "${R}/mrkcommon" ${_mrkcommon_done}
