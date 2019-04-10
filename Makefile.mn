@@ -1,0 +1,75 @@
+.check-env.done=${BUILDROOT}/.check-env.done
+.mndiag.done=${BUILDROOT}/.mndiag.done
+.mrkcommon.done=${BUILDROOT}/.mrkcommon.done
+
+
+#
+# help
+#
+help:
+	@echo
+	@echo "Usage: BUILDROOT=<abspath> ${MAKE} [target ...]"
+	@echo
+	@echo "Targets:"
+	@echo "	print-env"
+	@echo "	[clean-]mndiag"
+	@echo "	[clean-]mrkcommon"
+	@echo "	damage"
+	@echo "	clean"
+	@echo "	all"
+
+
+#
+# global targets
+#
+damage: clean-check-env
+
+clean: clean-check-env clean-mndiag clean-mrkcommon
+
+all: mndiag mrkcommon
+
+
+
+#
+# check-env
+#
+${.check-env.done}:
+	@echo "check BUILDROOT..." && test -n "${BUILDROOT}"
+	touch $@
+
+check-env: ${.check-env.done}
+	@echo $@ done
+
+clean-check-env:
+	@echo "check BUILDROOT..." && test -n "${BUILDROOT}"
+	rm -Rf ${.check-env.done}
+
+#
+# mndiag
+#
+${.mndiag.done}: ${.check-env.done}
+	@echo making $@ ...
+	touch ${.mndiag.done}
+
+mndiag: ${.mndiag.done}
+	@echo $@ done
+
+clean-mndiag: clean-check-env
+	@echo making $@
+	@rm -Rf "${BUILDROOT}/mndiag" ${.mndiag.done}
+
+
+#
+# mrkcommon
+#
+${.mrkcommon.done}: ${.check-env.done} ${.mndiag.done}
+	@echo making $@ ...
+	touch ${.mrkcommon.done}
+
+mrkcommon: ${.mrkcommon.done}
+	@echo $@ done
+
+clean-mrkcommon: clean-check-env
+	@echo making $@
+	@rm -Rf "${BUILDROOT}/mrkcommon" ${.mrkcommon.done}
+
