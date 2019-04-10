@@ -1,0 +1,70 @@
+.mndiag-fetch.done=${BUILDROOT}/.mndiag-fetch.done
+.mndiag-setup-init.done=${BUILDROOT}/.mndiag-setup-init.done
+.mndiag-setup-dev.done=${BUILDROOT}/.mndiag-setup-dev.done
+.mndiag-build.done=${BUILDROOT}/.mndiag-build.done
+.mndiag-install.done=${BUILDROOT}/.mndiag-install.done
+.mndiag-init.done=${BUILDROOT}/.mndiag-init.done
+.mndiag-dev.done=${BUILDROOT}/.mndiag-dev.done
+.mndiag.done=${BUILDROOT}/.mndiag.done
+
+
+#
+# mndiag
+#
+${.mndiag-fetch.done}: ${.check-env.done}
+	@test -d ${R}/mndiag || \
+	    ( cd ${R} && git clone mkushnir@big-1:development/mndiag )
+	@cd ${R}/mndiag && git pull
+	@touch ${.mndiag-fetch.done}
+
+${.mndiag-setup-init.done}: ${.mndiag-fetch.done}
+	@cd ${R}/mndiag && make distclean || true
+	@cd ${R}/mndiag && ./setup-env init
+	@touch ${.mndiag-setup-init.done}
+
+${.mndiag-setup-dev.done}: ${.mndiag-fetch.done}
+	@cd ${R}/mndiag && make distclean || true
+	@cd ${R}/mndiag && ./setup-env dev
+	@touch ${.mndiag-setup-dev.done}
+
+${.mndiag-build.done}: ${.mndiag-fetch.done}
+	@cd ${R}/mndiag && make
+	@touch ${.mndiag-build.done}
+
+${.mndiag-install.done}: ${.mndiag-build.done}
+	@cd ${R}/mndiag && make install
+	@touch ${.mndiag-install.done}
+
+
+${.mndiag-init.done}: ${.mndiag-setup-init.done} ${.mndiag-install.done}
+	@echo making $@ ...
+	@touch ${.mndiag-init.done}
+
+mndiag-init: ${.mndiag-init.done}
+	@echo $@ done
+
+
+${.mndiag-dev.done}: ${.mndiag-setup-dev.done} ${.mndiag-install.done}
+	@echo making $@ ...
+	@touch ${.mndiag-dev.done}
+
+mndiag-dev: ${.mndiag-dev.done}
+	@echo $@ done
+
+
+${.mndiag.done}: ${.mndiag-install.done}
+	@echo making $@ ...
+	@touch ${.mndiag.done}
+
+mndiag: ${.mndiag.done}
+	@echo $@ done
+
+
+clean-mndiag: ${.check-env.done}
+	@echo making $@
+	cd ${R}/mndiag && make clean
+	rm -Rf ${.mndiag-build.done}
+
+purge-mndiag: clean-check-env
+	@echo making $@
+	@rm -Rf "${R}/mndiag" ${.mndiag.done}

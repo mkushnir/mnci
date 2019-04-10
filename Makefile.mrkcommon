@@ -1,0 +1,66 @@
+.mrkcommon-fetch.done=${BUILDROOT}/.mrkcommon-fetch.done
+.mrkcommon-setup-init.done=${BUILDROOT}/.mrkcommon-setup-init.done
+.mrkcommon-setup-dev.done=${BUILDROOT}/.mrkcommon-setup-dev.done
+.mrkcommon-build.done=${BUILDROOT}/.mrkcommon-build.done
+.mrkcommon-install.done=${BUILDROOT}/.mrkcommon-install.done
+.mrkcommon-init.done=${BUILDROOT}/.mrkcommon-init.done
+.mrkcommon-dev.done=${BUILDROOT}/.mrkcommon-dev.done
+.mrkcommon.done=${BUILDROOT}/.mrkcommon.done
+
+
+#
+# mrkcommon
+#
+${.mrkcommon-fetch.done}: ${.check-env.done}
+	@test -d ${R}/mrkcommon || \
+	    ( cd ${R} && git clone mkushnir@big-1:development/mrkcommon )
+	@cd ${R}/mrkcommon && git pull
+	@touch ${.mrkcommon-fetch.done}
+
+${.mrkcommon-setup-init.done}: ${.mrkcommon-fetch.done}
+	@cd ${R}/mrkcommon && make distclean || true
+	@cd ${R}/mrkcommon && ./setup-env init
+	@touch ${.mrkcommon-setup-init.done}
+
+${.mrkcommon-setup-dev.done}: ${.mrkcommon-fetch.done}
+	@cd ${R}/mrkcommon && make distclean || true
+	@cd ${R}/mrkcommon && ./setup-env dev
+	@touch ${.mrkcommon-setup-dev.done}
+
+${.mrkcommon-build.done}: ${.mrkcommon-fetch.done}
+	@cd ${R}/mrkcommon && make
+	@touch ${.mrkcommon-build.done}
+
+${.mrkcommon-install.done}: ${.mrkcommon-build.done}
+	@cd ${R}/mrkcommon && make install
+	@touch ${.mrkcommon-install.done}
+
+${.mrkcommon-init.done}: ${.mrkcommon-setup-init.done} ${.mrkcommon-install.done}
+	@echo making $@ ...
+	@touch ${.mrkcommon-init.done}
+
+mrkcommon-init: mndiag-init ${.mrkcommon-init.done}
+	@echo $@ done
+
+${.mrkcommon-dev.done}: ${.mrkcommon-setup-dev.done} ${.mrkcommon-install.done}
+	@echo making $@ ...
+	@touch ${.mrkcommon-dev.done}
+
+mrkcommon-dev: mndiag-dev ${.mrkcommon-dev.done}
+	@echo $@ done
+
+${.mrkcommon.done}: mndiag-dev ${.mrkcommon-install.done}
+	@echo making $@ ...
+	@touch ${.mrkcommon.done}
+
+mrkcommon: ${.mrkcommon.done}
+	@echo $@ done
+
+clean-mrkcommon: ${.check-env.done}
+	@echo making $@
+	@cd ${R}/mrkcommon && make clean
+	@rm -Rf ${.mrkcommon-build.done}
+
+purge-mrkcommon: clean-check-env
+	@echo making $@
+	@rm -Rf "${R}/mrkcommon" ${.mrkcommon.done}

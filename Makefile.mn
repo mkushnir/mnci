@@ -1,7 +1,7 @@
 .check-env.done=${BUILDROOT}/.check-env.done
-.mndiag.done=${BUILDROOT}/.mndiag.done
-.mrkcommon.done=${BUILDROOT}/.mrkcommon.done
 
+
+R=${BUILDROOT}
 
 #
 # help
@@ -12,8 +12,8 @@ help:
 	@echo
 	@echo "Targets:"
 	@echo "	print-env"
-	@echo "	[clean-]mndiag"
-	@echo "	[clean-]mrkcommon"
+	@echo "	[clean-]mndiag[-init]"
+	@echo "	[clean-]mrkcommon[-init]"
 	@echo "	damage"
 	@echo "	clean"
 	@echo "	all"
@@ -24,8 +24,12 @@ help:
 #
 damage: clean-check-env
 
-clean: clean-check-env clean-mndiag clean-mrkcommon
+purge: clean-check-env purge-mndiag purge-mrkcommon
 
+clean: clean-mndiag clean-mrkcommon
+
+all-init: mndiag-init mrkcommon-init
+all-dev: mndiag-dev mrkcommon-dev
 all: mndiag mrkcommon
 
 
@@ -34,42 +38,17 @@ all: mndiag mrkcommon
 # check-env
 #
 ${.check-env.done}:
-	@echo "check BUILDROOT..." && test -n "${BUILDROOT}"
-	touch $@
+	@echo "check BUILDROOT..." && \
+	    test -n "${BUILDROOT}" && \
+	    test -d "${BUILDROOT}"
+	@touch $@
 
 check-env: ${.check-env.done}
 	@echo $@ done
 
 clean-check-env:
 	@echo "check BUILDROOT..." && test -n "${BUILDROOT}"
-	rm -Rf ${.check-env.done}
+	@rm -Rf ${.check-env.done}
 
-#
-# mndiag
-#
-${.mndiag.done}: ${.check-env.done}
-	@echo making $@ ...
-	touch ${.mndiag.done}
-
-mndiag: ${.mndiag.done}
-	@echo $@ done
-
-clean-mndiag: clean-check-env
-	@echo making $@
-	@rm -Rf "${BUILDROOT}/mndiag" ${.mndiag.done}
-
-
-#
-# mrkcommon
-#
-${.mrkcommon.done}: ${.check-env.done} ${.mndiag.done}
-	@echo making $@ ...
-	touch ${.mrkcommon.done}
-
-mrkcommon: ${.mrkcommon.done}
-	@echo $@ done
-
-clean-mrkcommon: clean-check-env
-	@echo making $@
-	@rm -Rf "${BUILDROOT}/mrkcommon" ${.mrkcommon.done}
-
+.include "Makefile.mndiag"
+.include "Makefile.mrkcommon"
