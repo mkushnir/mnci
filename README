@@ -1,8 +1,5 @@
-purge:
-    make BUILDROOT=/tmp/qwe -f Makefile.mn purge
+./setup-env init
 
-init:
-    make BUILDROOT=/tmp/qwe -f Makefile.mn mndiag-init mrkcommon-init
+make help
+make MODULE-init
 
-dev:
-    make BUILDROOT=/tmp/qwe -f Makefile.mn mndiag-dev mrkcommon-dev
