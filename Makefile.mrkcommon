@@ -12,9 +12,7 @@ _mrkcommon_done=${BUILDROOT}/.mrkcommon.done
 # mrkcommon
 #
 ${_mrkcommon_fetch_done}: ${_check_env_done}
-	@test -d ${R}/mrkcommon || \
-	    ( cd ${R} && git clone mkushnir@big-1:development/mrkcommon )
-	@cd ${R}/mrkcommon && git pull
+	@test -d ${R}/mrkcommon -a -f ${R}/mrkcommon/setup-env
 	@touch ${_mrkcommon_fetch_done}
 
 ${_mrkcommon_setup_init_done}: ${_mrkcommon_fetch_done}
