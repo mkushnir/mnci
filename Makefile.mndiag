@@ -12,7 +12,9 @@ _mndiag_done=${BUILDROOT}/.mndiag.done
 # mndiag
 #
 ${_mndiag_fetch_done}: ${_check_env_done}
-	@test -d ${R}/mndiag -a -f ${R}/mndiag/setup-env
+	@test -d ${R}/mndiag || \
+	    ( cd ${R} && git clone mkushnir@big-1:development/mndiag )
+	@cd ${R}/mndiag && git pull
 	@touch ${_mndiag_fetch_done}
 
 ${_mndiag_setup_init_done}: ${_mndiag_fetch_done}
