@@ -38,7 +38,7 @@ ${_mrkl4c_build_done}: ${_mrkl4c_fetch_done}
 	@cd ${R}/mrkl4c && make
 	@touch ${_mrkl4c_build_done}
 
-${_mrkl4c_install_done}: ${_mrkl4c_build_done}
+${_mrkl4c_install_done}: ${_mrkl4c_fetch_done}
 	@cd ${R}/mrkl4c && make install
 	@touch ${_mrkl4c_install_done}
 

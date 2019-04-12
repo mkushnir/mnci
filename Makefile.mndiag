@@ -38,7 +38,7 @@ ${_mndiag_build_done}: ${_mndiag_fetch_done}
 	@cd ${R}/mndiag && make
 	@touch ${_mndiag_build_done}
 
-${_mndiag_install_done}: ${_mndiag_build_done}
+${_mndiag_install_done}: ${_mndiag_fetch_done}
 	@cd ${R}/mndiag && make install
 	@touch ${_mndiag_install_done}
 

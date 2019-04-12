@@ -38,7 +38,7 @@ ${_mrkthr_build_done}: ${_mrkthr_fetch_done}
 	@cd ${R}/mrkthr && make
 	@touch ${_mrkthr_build_done}
 
-${_mrkthr_install_done}: ${_mrkthr_build_done}
+${_mrkthr_install_done}: ${_mrkthr_fetch_done}
 	@cd ${R}/mrkthr && make install
 	@touch ${_mrkthr_install_done}
 

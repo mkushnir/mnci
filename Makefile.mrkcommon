@@ -38,7 +38,7 @@ ${_mrkcommon_build_done}: ${_mrkcommon_fetch_done}
 	@cd ${R}/mrkcommon && make
 	@touch ${_mrkcommon_build_done}
 
-${_mrkcommon_install_done}: ${_mrkcommon_build_done}
+${_mrkcommon_install_done}: ${_mrkcommon_fetch_done}
 	@cd ${R}/mrkcommon && make install
 	@touch ${_mrkcommon_install_done}
 
