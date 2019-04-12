@@ -1,0 +1,14 @@
+#!/bin/sh
+
+mylimit='testing'
+cmd=$1
+shift
+
+if test "$cmd" = setup
+then
+    ansible-playbook -b -i inventory --limit "$mylimit" playbooks/setup.yml $*
+
+elif test "$cmd" = dev
+then
+    ansible-playbook -b -i inventory --limit "$mylimit" playbooks/dev.yml $*
+fi
