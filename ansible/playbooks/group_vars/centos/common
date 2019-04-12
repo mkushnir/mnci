@@ -13,4 +13,4 @@ appdeps:
     - libpcap-devel
 
 timepackage: ntpdate
-timeprog: ntpdate
+timesync: ntpdate {{ timeserver }}

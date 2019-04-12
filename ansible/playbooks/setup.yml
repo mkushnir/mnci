@@ -5,6 +5,10 @@
     remote_user: "{{ ruser }}"
     gather_facts: false
     strategy: debug
+
+    vars:
+        timeserver: 0.ua.pool.ntp.org
+
     #tags:
     #    - setup-all
 

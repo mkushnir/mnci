@@ -1,5 +1,4 @@
 ---
-
 - name: OpenJDK for jenkins
   tags: jenkins
   package:
@@ -60,3 +59,16 @@
   tags: dev
   package:
       name: "{{ appdeps }}"
+
+
+- name: Setup time service
+  tags: timesvc
+  when: timesvcsetup is defined
+  shell: "{{ timesvcsetup }} || true"
+  register: cmdres
+  changed_when: cmdres.stdout_lines[0] == '200 OK'
+
+- name: Setup time service
+  tags: timesync
+  when: timesync is defined
+  command: "{{ timesync }}"

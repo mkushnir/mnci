@@ -17,3 +17,5 @@ appdeps:
 
 timepackage: chrony
 timeservice: chronyd
+timesvcsetup: chronyc add server {{ timeserver }}
+timesync: chronyc makestep

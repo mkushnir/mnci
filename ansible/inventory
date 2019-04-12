@@ -17,6 +17,7 @@ ubuntu:
 centos:
     hosts:
         vm-132:
+        vm-133:
 
 arch:
     hosts:
@@ -34,8 +35,9 @@ vm:
 
 testing:
     hosts:
-        #vm-101:
-        #vm-132:
+        vm-101:
+        vm-132:
+        vm-133:
         vm-148:
-        #vm-149:
+        vm-149:
 

@@ -12,3 +12,6 @@ mndeps:
 appdeps:
     - ffmpeg
 
+timepackage: ntpdate
+timesync: ntpdate {{ timeserver }}
+
