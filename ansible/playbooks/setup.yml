@@ -39,7 +39,7 @@
           changed_when: cmdres.stdout_lines[0] != 'The most recent version of packages are already installed'
 
         - name: Check Python Installation (archlinux)
-          when: "'arch' in group_names"
+          when: "'archlinux' in group_names"
           tags: bootstrap
           raw: /bin/sh -c 'pacman -q --noconfirm -Q python || pacman --noconfirm -S python'
           register: cmdres

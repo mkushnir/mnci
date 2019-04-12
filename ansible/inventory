@@ -19,7 +19,7 @@ centos:
         vm-132:
         vm-133:
 
-arch:
+archlinux:
     hosts:
         vm-148:
         vm-149:
