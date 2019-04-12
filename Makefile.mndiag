@@ -1,10 +1,12 @@
 _mndiag_fetch_done=${BUILDROOT}/.mndiag-fetch.done
 _mndiag_setup_init_done=${BUILDROOT}/.mndiag-setup-init.done
 _mndiag_setup_dev_done=${BUILDROOT}/.mndiag-setup-dev.done
+_mndiag_setup_dev_ndebug_done=${BUILDROOT}/.mndiag-setup-dev-ndebug.done
 _mndiag_build_done=${BUILDROOT}/.mndiag-build.done
 _mndiag_install_done=${BUILDROOT}/.mndiag-install.done
 _mndiag_init_done=${BUILDROOT}/.mndiag-init.done
 _mndiag_dev_done=${BUILDROOT}/.mndiag-dev.done
+_mndiag_dev_ndebug_done=${BUILDROOT}/.mndiag-dev-ndebug.done
 _mndiag_done=${BUILDROOT}/.mndiag.done
 
 
@@ -22,10 +24,15 @@ ${_mndiag_setup_init_done}: ${_mndiag_fetch_done}
 	@cd ${R}/mndiag && ./setup-env init
 	@touch ${_mndiag_setup_init_done}
 
-${_mndiag_setup_dev_done}: ${_mndiag_fetch_done}
+${_mndiag_setup_dev_done}: ${_mndiag_setup_init_done}
 	@cd ${R}/mndiag && make distclean || true
 	@cd ${R}/mndiag && ./setup-env dev
 	@touch ${_mndiag_setup_dev_done}
+
+${_mndiag_setup_dev_ndebug_done}: ${_mndiag_setup_init_done}
+	@cd ${R}/mndiag && make distclean || true
+	@cd ${R}/mndiag && ./setup-env dev-ndebug
+	@touch ${_mndiag_setup_dev_ndebug_done}
 
 ${_mndiag_build_done}: ${_mndiag_fetch_done}
 	@cd ${R}/mndiag && make
@@ -52,11 +59,11 @@ mndiag-dev: ${_mndiag_dev_done}
 	@echo $@ done
 
 
-${_mndiag_done}: ${_mndiag_install_done}
+${_mndiag_dev_ndebug_done}: ${_mndiag_setup_dev_ndebug_done} ${_mndiag_install_done}
 	@echo making $@ ...
-	@touch ${_mndiag_done}
+	@touch ${_mndiag_dev_ndebug_done}
 
-mndiag: ${_mndiag_done}
+mndiag-dev-ndebug: ${_mndiag_dev_ndebug_done}
 	@echo $@ done
 
 

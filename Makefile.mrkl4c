@@ -1,0 +1,74 @@
+_mrkl4c_fetch_done=${BUILDROOT}/.mrkl4c-fetch.done
+_mrkl4c_setup_init_done=${BUILDROOT}/.mrkl4c-setup-init.done
+_mrkl4c_setup_dev_done=${BUILDROOT}/.mrkl4c-setup-dev.done
+_mrkl4c_setup_dev_ndebug_done=${BUILDROOT}/.mrkl4c-setup-dev-ndebug.done
+_mrkl4c_build_done=${BUILDROOT}/.mrkl4c-build.done
+_mrkl4c_install_done=${BUILDROOT}/.mrkl4c-install.done
+_mrkl4c_init_done=${BUILDROOT}/.mrkl4c-init.done
+_mrkl4c_dev_done=${BUILDROOT}/.mrkl4c-dev.done
+_mrkl4c_dev_ndebug_done=${BUILDROOT}/.mrkl4c-dev-ndebug.done
+_mrkl4c_done=${BUILDROOT}/.mrkl4c.done
+
+
+#
+# mrkl4c
+#
+${_mrkl4c_fetch_done}: ${_check_env_done}
+	@test -d ${R}/mrkl4c || \
+	    ( cd ${R} && git clone mkushnir@big-1:development/mrkl4c )
+	@cd ${R}/mrkl4c && git pull
+	@touch ${_mrkl4c_fetch_done}
+
+${_mrkl4c_setup_init_done}: ${_mrkl4c_fetch_done}
+	@cd ${R}/mrkl4c && make distclean || true
+	@cd ${R}/mrkl4c && ./setup-env init
+	@touch ${_mrkl4c_setup_init_done}
+
+${_mrkl4c_setup_dev_done}: ${_mrkl4c_setup_init_done}
+	@cd ${R}/mrkl4c && make distclean || true
+	@cd ${R}/mrkl4c && ./setup-env dev
+	@touch ${_mrkl4c_setup_dev_done}
+
+${_mrkl4c_setup_dev_ndebug_done}: ${_mrkl4c_setup_init_done}
+	@cd ${R}/mrkl4c && make distclean || true
+	@cd ${R}/mrkl4c && ./setup-env dev-ndebug
+	@touch ${_mrkl4c_setup_dev_ndebug_done}
+
+${_mrkl4c_build_done}: ${_mrkl4c_fetch_done}
+	@cd ${R}/mrkl4c && make
+	@touch ${_mrkl4c_build_done}
+
+${_mrkl4c_install_done}: ${_mrkl4c_build_done}
+	@cd ${R}/mrkl4c && make install
+	@touch ${_mrkl4c_install_done}
+
+${_mrkl4c_init_done}: ${_mrkl4c_setup_init_done} ${_mrkl4c_install_done}
+	@echo making $@ ...
+	@touch ${_mrkl4c_init_done}
+
+mrkl4c-init: mrkcommon-init ${_mrkl4c_init_done}
+	@echo $@ done
+
+${_mrkl4c_dev_done}: ${_mrkl4c_setup_dev_done} ${_mrkl4c_install_done}
+	@echo making $@ ...
+	@touch ${_mrkl4c_dev_done}
+
+mrkl4c-dev: mrkcommon-dev ${_mrkl4c_dev_done}
+	@echo $@ done
+
+${_mrkl4c_dev_ndebug_done}: ${_mrkl4c_setup_dev_ndebug_done} ${_mrkl4c_install_done}
+	@echo making $@ ...
+	@touch ${_mrkl4c_dev_ndebug_done}
+
+mrkl4c-dev-ndebug: mrkcommon-dev-ndebug ${_mrkl4c_dev_done}
+	@echo $@ done
+
+clean-mrkl4c: ${_check_env_done}
+	@echo making $@
+	@cd ${R}/mrkl4c && make clean
+	@rm -Rf ${_mrkl4c_build_done}
+
+purge-mrkl4c: clean-check-env
+	@echo making $@
+	@rm -Rf "${R}/mrkl4c" ${_mrkl4c_done}
+

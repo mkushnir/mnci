@@ -12,8 +12,9 @@ help:
 	@echo
 	@echo "Targets:"
 	@echo "	print-env"
-	@echo "	[clean-]mndiag[-init]"
-	@echo "	[clean-]mrkcommon[-init]"
+	@echo "	[clean-]mndiag[-init|-dev[-ndebug]]"
+	@echo "	[clean-]mrkcommon[-init|-dev[-ndebug]]"
+	@echo "	[clean-]mrkl4c[-init|-dev[-ndebug]]"
 	@echo "	damage"
 	@echo "	clean"
 	@echo "	all"
@@ -24,15 +25,15 @@ help:
 #
 damage: clean-check-env
 
-purge: clean-check-env purge-mndiag purge-mrkcommon
+purge: clean-check-env purge-mndiag purge-mrkcommon purge-mrkl4c
 
-clean: clean-mndiag clean-mrkcommon
+clean: clean-mndiag clean-mrkcommon clean-mrkl4c
 
-all-init: mndiag-init mrkcommon-init
+all-init: mndiag-init mrkcommon-init mrkl4c-init
 
-all-dev: mndiag-dev mrkcommon-dev
+all-dev: mndiag-dev mrkcommon-dev mrkl4c-dev
 
-all: mndiag mrkcommon
+all-dev-ndebug: mndiag-dev-ndebug mrkcommon-dev-ndebug mrkl4c-dev-ndebug
 
 
 
@@ -54,3 +55,4 @@ clean-check-env:
 
 include Makefile.mndiag
 include Makefile.mrkcommon
+include Makefile.mrkl4c

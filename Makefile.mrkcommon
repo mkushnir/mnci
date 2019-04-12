@@ -1,10 +1,12 @@
 _mrkcommon_fetch_done=${BUILDROOT}/.mrkcommon-fetch.done
 _mrkcommon_setup_init_done=${BUILDROOT}/.mrkcommon-setup-init.done
 _mrkcommon_setup_dev_done=${BUILDROOT}/.mrkcommon-setup-dev.done
+_mrkcommon_setup_dev_ndebug_done=${BUILDROOT}/.mrkcommon-setup-dev-ndebug.done
 _mrkcommon_build_done=${BUILDROOT}/.mrkcommon-build.done
 _mrkcommon_install_done=${BUILDROOT}/.mrkcommon-install.done
 _mrkcommon_init_done=${BUILDROOT}/.mrkcommon-init.done
 _mrkcommon_dev_done=${BUILDROOT}/.mrkcommon-dev.done
+_mrkcommon_dev_ndebug_done=${BUILDROOT}/.mrkcommon-dev-ndebug.done
 _mrkcommon_done=${BUILDROOT}/.mrkcommon.done
 
 
@@ -22,10 +24,15 @@ ${_mrkcommon_setup_init_done}: ${_mrkcommon_fetch_done}
 	@cd ${R}/mrkcommon && ./setup-env init
 	@touch ${_mrkcommon_setup_init_done}
 
-${_mrkcommon_setup_dev_done}: ${_mrkcommon_fetch_done}
+${_mrkcommon_setup_dev_done}: ${_mrkcommon_setup_init_done}
 	@cd ${R}/mrkcommon && make distclean || true
 	@cd ${R}/mrkcommon && ./setup-env dev
 	@touch ${_mrkcommon_setup_dev_done}
+
+${_mrkcommon_setup_dev_ndebug_done}: ${_mrkcommon_setup_init_done}
+	@cd ${R}/mrkcommon && make distclean || true
+	@cd ${R}/mrkcommon && ./setup-env dev-ndebug
+	@touch ${_mrkcommon_setup_dev_ndebug_done}
 
 ${_mrkcommon_build_done}: ${_mrkcommon_fetch_done}
 	@cd ${R}/mrkcommon && make
@@ -49,11 +56,11 @@ ${_mrkcommon_dev_done}: ${_mrkcommon_setup_dev_done} ${_mrkcommon_install_done}
 mrkcommon-dev: mndiag-dev ${_mrkcommon_dev_done}
 	@echo $@ done
 
-${_mrkcommon_done}: mndiag-dev ${_mrkcommon_install_done}
+${_mrkcommon_dev_ndebug_done}: ${_mrkcommon_setup_dev_ndebug_done} ${_mrkcommon_install_done}
 	@echo making $@ ...
-	@touch ${_mrkcommon_done}
+	@touch ${_mrkcommon_dev_ndebug_done}
 
-mrkcommon: ${_mrkcommon_done}
+mrkcommon-dev-ndebug: mndiag-dev-ndebug ${_mrkcommon_dev_done}
 	@echo $@ done
 
 clean-mrkcommon: ${_check_env_done}
