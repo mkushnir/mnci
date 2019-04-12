@@ -1,0 +1,62 @@
+---
+-
+    name: Development
+    hosts: testing
+    remote_user: "{{ ruser }}"
+    gather_facts: true
+    strategy: debug
+    vars:
+        mydeps:
+            - libyaml
+            - libev
+
+        mnbase:
+            - mndiag
+            - mrkcommon
+            - mrkl4c
+            - mrkthr
+            - mrkapp
+
+        mnextra:
+            - mrkprotobuf
+            - mnspinfo
+            - mrkyaml
+
+        mproto:
+            - mrkamqp
+            - mnfcgi
+            - mnredis
+
+        mndb:
+            - mrkpq
+            - mrkdata
+            - mrkdb
+            - mrkrpc
+            - mrkdht
+
+        mntest:
+            - test-pipe
+            - tests-pcap
+            - mnsip
+
+
+    tasks:
+        - name: git prepare from local
+          tags: gitup-local
+          git:
+              repo: mkushnir@big-1:development/{{ item }}
+              dest: $HOME/development/{{ item }}
+              accept_hostkey: yes
+          with_items: "{{ mnbase }}"
+
+        - name: git prepare from github.com
+          tags: gitup-gh
+          git:
+              repo: mkushnir@github.com:{{ item }}.git
+              dest: $HOME/development/{{ item }}
+              accept_hostkey: yes
+          with_items: "{{ mnbase }}"
+
+        - name: init project
+          tags: mn-init
+

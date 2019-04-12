@@ -1,0 +1,32 @@
+---
+- name: Set authorized keys
+  tags:
+      - authkeys
+  authorized_key:
+      user: "{{ ruser }}"
+      state: present
+      comment: ansible-bot
+      key: "{{ lookup('file', ansible_pub_key) }}"
+
+
+- name: Reboot
+  tags:
+      - reboot
+  command: "/sbin/shutdown -r +1 Reboot by ansible"
+  when: ansible_facts['distribution'] in ('FreeBSD')
+  #when: '"freebsd" in group_names'
+  register: rbazf
+
+- name: Reboot
+  tags:
+      - reboot
+  become: true
+  raw: "/sbin/shutdown -r +1 Reboot by ansible"
+  when: ansible_facts['distribution'] ('Ubuntu', 'CentOS', 'Archlinux')
+  register: rbazu
+
+- name: Report
+  tags:
+      - reboot
+  debug:
+      msg: "{{ rbazf.get('stdout_lines', []) + rbazu.get('stdout_lines', []) }}"

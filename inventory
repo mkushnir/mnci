@@ -1,0 +1,41 @@
+freebsd:
+    hosts:
+        vm-101:
+        vm-109:
+        vm-pear-101:
+        vm-pear-102:
+        vm-pear-103:
+
+ubuntu:
+    hosts:
+        vm-117:
+        vm-118:
+        vm-pear-117:
+        vm-pear-118:
+        vm-pear-113:
+
+centos:
+    hosts:
+        vm-132:
+
+arch:
+    hosts:
+        vm-148:
+        vm-149:
+
+
+vm_pear:
+    hosts:
+        vm-pear-[100:999]:
+
+vm:
+    hosts:
+        vm-[100:999]:
+
+testing:
+    hosts:
+        #vm-101:
+        #vm-132:
+        vm-148:
+        #vm-149:
+

@@ -1,0 +1,19 @@
+---
+ansible_python_interpreter: /sbin/python
+ruser: root
+openjdk: jdk-openjdk
+devtools:
+    - base-devel
+    - libyaml
+    - libev
+editor: vim-minimal
+mndeps:
+    - libyaml
+    - libev
+
+appdeps:
+    - libpcap
+    - ffmpeg
+
+timepackage: chrony
+timeservice: chronyd

@@ -1,0 +1,10 @@
+---
+ansible_python_interpreter: /usr/bin/python3
+ruser: mkushnir
+become: true
+devtools:
+    - build-essential
+editor: vim
+mndeps:
+    - libyaml-dev
+    - libev-dev

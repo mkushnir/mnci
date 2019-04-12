@@ -1,0 +1,1 @@
+ansible_pub_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa-ansible-test.pub"

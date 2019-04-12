@@ -1,0 +1,92 @@
+---
+-
+    name: Admin
+    hosts: all
+    remote_user: "{{ ruser }}"
+    gather_facts: false
+    strategy: debug
+    #tags:
+    #    - setup-all
+
+    pre_tasks:
+        - name: Bootstrap ubuntu
+          when: "'ubuntu' in group_names"
+          tags: bootstrap
+          debug:
+              msg: Setup for ansible
+
+        - name: Bootstrap centos
+          when: "'centos' in group_names"
+          tags: bootstrap
+          debug:
+              msg: Setup for ansible
+
+        - name: Bootstrap freebsd
+          when: "'freebsd' in group_names"
+          tags: bootstrap
+          raw: /bin/sh -c 'ASSUME_ALWAYS_YES=yes pkg info'
+          changed_when: False
+
+        - name: Check Python Installation (freebsd)
+          when: "'freebsd' in group_names"
+          tags: bootstrap
+          raw: /bin/sh -c 'ASSUME_ALWAYS_YES=yes pkg install python'
+          register: cmdres
+          changed_when: cmdres.stdout_lines[0] != 'The most recent version of packages are already installed'
+
+        - name: Check Python Installation (archlinux)
+          when: "'arch' in group_names"
+          tags: bootstrap
+          raw: /bin/sh -c 'pacman -q --noconfirm -Q python || pacman --noconfirm -S python'
+          register: cmdres
+          changed_when: cmdres.stdout_lines[0] != 'python'
+
+    tasks:
+        - import_role:
+            name: admin
+
+        - import_role:
+            name: common
+
+        - name: The development directory
+          tags: dev
+          file:
+              path: $HOME/development
+              state: directory
+
+        # misc
+        - name: Extra
+          tags:
+              - misc
+          raw: echo extra
+          register: rv
+
+        - name: Report
+          tags:
+              - x-misc
+          debug:
+              msg: "{{ vars.get('rv', {}).get('stdout_lines', []) }}"
+
+
+
+-
+    name: Misc
+    hosts: all
+    remote_user: "{{ ruser }}"
+    gather_facts: false
+    tags:
+        - misc
+    tasks:
+        - name: My ruser
+          raw: echo {{ruser}}
+          register: rfoo
+
+        - name: My uname
+          raw: uname -a
+          register: rbar
+
+        - name: Report
+          tags:
+              - x-misc
+          debug:
+              msg: "{{ vars.get('rfoo', {}).get('stdout_lines', []) + vars.get('rbar', {}).get('stdout_lines', []) }}"

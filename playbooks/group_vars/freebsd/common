@@ -1,0 +1,14 @@
+---
+ansible_python_interpreter: /usr/local/bin/python
+ruser: root
+openjdk: openjdk8
+devtools:
+    - autotools
+    - pkgconf
+editor: vim-console
+mndeps:
+    - libyaml
+
+appdeps:
+    - ffmpeg
+

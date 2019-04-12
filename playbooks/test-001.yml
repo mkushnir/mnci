@@ -1,0 +1,111 @@
+---
+-
+    hosts: freebsd
+    remote_user: root
+    gather_facts: false
+    strategy: debug
+
+    vars:
+        foo: The Foo
+        bar: $USER
+
+    handlers:
+        - name: H1
+          command: echo h1
+          listen: H
+        - name: H2
+          command: echo h2
+          listen: H
+
+    roles:
+    pre_tasks:
+        - name: BOP
+          debug:
+            msg: Begin of play
+
+        - name: Pre 01
+          command: echo pre 01
+
+    post_tasks:
+        - name: Post 01
+          command: echo post 01
+
+        - name: EOP
+          debug:
+            msg: end of play
+
+    tasks:
+
+        - name: My Check
+          ping:
+
+        - name: Task 1
+          shell: echo {{foo}}
+          register: t01
+          notify: H
+
+        - name: Task 2
+          command: echo {{bar}}
+          register: t02
+          notify: H
+
+        - name: Learn Service
+          service: name=devd state=started
+
+        - name: Learn Shell
+          shell: /usr/bin/true
+
+-
+    hosts: ubuntu
+    remote_user: mkushnir
+
+    vars:
+        foo: The Foo
+        bar: $USER
+
+    handlers:
+        - name: H1
+          command: echo h1
+          listen: H
+        - name: H2
+          command: echo h2
+          listen: H
+
+    roles:
+    pre_tasks:
+        - name: BOP
+          debug:
+            msg: Begin of play
+
+        - name: Pre 01
+          command: echo pre 01
+
+    post_tasks:
+        - name: Post 01
+          command: echo post 01
+
+        - name: EOP
+          debug:
+            msg: end of play
+
+    tasks:
+
+        - name: My Check
+          ping:
+
+        - name: Task 1
+          shell: echo {{foo}}
+          register: t01
+          notify: H
+
+        - name: Task 2
+          command: echo {{bar}}
+          register: t02
+          notify: H
+
+        - name: Learn Service
+          service: name=udev state=started
+
+        - name: Learn Shell
+          shell: echo true
+

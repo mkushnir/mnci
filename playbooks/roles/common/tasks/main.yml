@@ -1,0 +1,62 @@
+---
+
+- name: OpenJDK for jenkins
+  tags: jenkins
+  package:
+      name: "{{ openjdk }}"
+      state: present
+
+- name: User jenkins
+  tags: jenkins
+  user:
+      name: jenkins
+      home: /home/jenkins
+      state: present
+
+- name: Authorized key for jenkins
+  tags: jenkins
+  authorized_key:
+      user: jenkins
+      state: present
+      comment: jenkins-bot
+      key: "{{ lookup('file', jenkins_pub_key) }}"
+
+- name: Time package for jenkins
+  when: timepackage is defined
+  tags: jenkins
+  package:
+      name: "{{ timepackage }}"
+      state: present
+
+- name: Time service for jenkins
+  when: timeservice is defined
+  tags: jenkins
+  service:
+      name: "{{ timeservice }}"
+      enabled: yes
+      state: started
+
+
+
+- name: Base development tools
+  tags: dev
+  package:
+      name: "{{ devtools }}"
+      state: present
+
+- name: More tools
+  tags: dev
+  package:
+      name: ['{{ editor }}', 'git']
+      state: present
+
+
+- name: Libraries for mn
+  tags: dev
+  package:
+      name: "{{ mndeps }}"
+
+- name: Libraries for apps
+  tags: dev
+  package:
+      name: "{{ appdeps }}"

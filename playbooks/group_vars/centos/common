@@ -1,0 +1,16 @@
+---
+ansible_python_interpreter: /bin/python
+ruser: root
+openjdk: java-11-openjdk
+devtools:
+    - epel-release
+    - "@development tools"
+editor: vim-minimal
+mndeps:
+    - libyaml-devel
+    - libev-devel
+appdeps:
+    - libpcap-devel
+
+timepackage: ntpdate
+timeprog: ntpdate
