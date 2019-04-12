@@ -60,7 +60,7 @@ ${_mrkl4c_dev_ndebug_done}: ${_mrkl4c_setup_dev_ndebug_done} ${_mrkl4c_install_d
 	@echo making $@ ...
 	@touch ${_mrkl4c_dev_ndebug_done}
 
-mrkl4c-dev-ndebug: mrkcommon-dev-ndebug ${_mrkl4c_dev_done}
+mrkl4c-dev-ndebug: mrkcommon-dev-ndebug ${_mrkl4c_dev_ndebug_done}
 	@echo $@ done
 
 clean-mrkl4c: ${_check_env_done}

@@ -60,7 +60,7 @@ ${_mrkcommon_dev_ndebug_done}: ${_mrkcommon_setup_dev_ndebug_done} ${_mrkcommon_
 	@echo making $@ ...
 	@touch ${_mrkcommon_dev_ndebug_done}
 
-mrkcommon-dev-ndebug: mndiag-dev-ndebug ${_mrkcommon_dev_done}
+mrkcommon-dev-ndebug: mndiag-dev-ndebug ${_mrkcommon_dev_ndebug_done}
 	@echo $@ done
 
 clean-mrkcommon: ${_check_env_done}
