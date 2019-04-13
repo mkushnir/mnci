@@ -16,6 +16,7 @@ help:
 	@echo "	[clean-]mrkcommon[-init|-dev[-ndebug]]"
 	@echo "	[clean-]mrkl4c[-init|-dev[-ndebug]]"
 	@echo "	[clean-]mrkthr[-init|-dev[-ndebug]]"
+	@echo "	[clean-]mrkapp[-init|-dev[-ndebug]]"
 	@echo "	damage"
 	@echo "	clean"
 	@echo "	all"
@@ -26,15 +27,15 @@ help:
 #
 damage: clean-check-env
 
-purge: clean-check-env purge-mndiag purge-mrkcommon purge-mrkl4c purge-mrkthr
+purge: clean-check-env purge-mndiag purge-mrkcommon purge-mrkl4c purge-mrkthr purge-mrkapp
 
-clean: clean-mndiag clean-mrkcommon clean-mrkl4c clean-mrkthr
+clean: clean-mndiag clean-mrkcommon clean-mrkl4c clean-mrkthr clean-mrkapp
 
-all-init: mndiag-init mrkcommon-init mrkl4c-init mrkthr-init
+all-init: mndiag-init mrkcommon-init mrkl4c-init mrkthr-init mrkapp-init
 
-all-dev: mndiag-dev mrkcommon-dev mrkl4c-dev mrkthr-dev
+all-dev: mndiag-dev mrkcommon-dev mrkl4c-dev mrkthr-dev mrkapp-dev
 
-all-dev-ndebug: mndiag-dev-ndebug mrkcommon-dev-ndebug mrkl4c-dev-ndebug mrkthr-dev-ndebug
+all-dev-ndebug: mndiag-dev-ndebug mrkcommon-dev-ndebug mrkl4c-dev-ndebug mrkthr-dev-ndebug mrkapp-dev-ndebug
 
 
 
@@ -58,3 +59,4 @@ include Makefile.mndiag
 include Makefile.mrkcommon
 include Makefile.mrkl4c
 include Makefile.mrkthr
+include Makefile.mrkapp
