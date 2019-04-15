@@ -1,4 +1,4 @@
-AC_INIT(mnci, 0.1, markiyan.kushnir@gmail.com, asd, https://github.com/mkushnir)
+AC_INIT(mnci, 0.1, markiyan.kushnir@gmail.com, mnci, https://github.com/mkushnir)
 
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([.ac-aux])
