@@ -1,0 +1,58 @@
+mydeps:
+    - 
+      name: libyaml
+    - 
+      name: libev
+
+mnbase:
+    - 
+      name: mndiag
+    - 
+      name: mrkcommon
+    - 
+      name: mrkl4c
+    - 
+      name: mrkthr
+    - 
+      name: mrkapp
+
+mnextra:
+    - 
+      name: mrkprotobuf
+    - 
+      name: mnspinfo
+    - 
+      name: mrkyaml
+    - 
+      name: mnlipc
+      dev: dev-pthread
+
+mnproto:
+    - 
+      name: mrkamqp
+    - 
+      name: mnfcgi
+    - 
+      name: mnredis
+
+mndb:
+    - 
+      name: mrkpq
+    - 
+      name: mrkdata
+    - 
+      name: mrkdb
+    - 
+      name: mrkrpc
+    - 
+      name: mrkdht
+
+mntest:
+    - 
+      name: test-pipe
+    - 
+      name: test-pcap
+    - 
+      name: mnsip
+
+

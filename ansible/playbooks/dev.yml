@@ -1,62 +1,100 @@
 ---
 -
     name: Development
-    hosts: testing
+    hosts: dev
     remote_user: "{{ ruser }}"
     gather_facts: true
     strategy: debug
-    vars:
-        mydeps:
-            - libyaml
-            - libev
-
-        mnbase:
-            - mndiag
-            - mrkcommon
-            - mrkl4c
-            - mrkthr
-            - mrkapp
-
-        mnextra:
-            - mrkprotobuf
-            - mnspinfo
-            - mrkyaml
-
-        mproto:
-            - mrkamqp
-            - mnfcgi
-            - mnredis
-
-        mndb:
-            - mrkpq
-            - mrkdata
-            - mrkdb
-            - mrkrpc
-            - mrkdht
-
-        mntest:
-            - test-pipe
-            - tests-pcap
-            - mnsip
-
-
     tasks:
-        - name: git prepare from local
-          tags: gitup-local
+        - import_role:
+            name: development
+
+        - name: git prepare mnbase from local
+          tags:
+              - gitup-local
+              - mnbase
           git:
-              repo: mkushnir@big-1:development/{{ item }}
-              dest: $HOME/development/{{ item }}
+              repo: mkushnir@big-1:development/{{ item['name'] }}
+              dest: $HOME/development/{{ item['name'] }}
               accept_hostkey: yes
           with_items: "{{ mnbase }}"
 
-        - name: git prepare from github.com
+        - name: git prepare mnextra from local
+          tags:
+              - gitup-local
+              - mnextra
+          git:
+              repo: mkushnir@big-1:development/{{ item['name'] }}
+              dest: $HOME/development/{{ item['name'] }}
+              accept_hostkey: yes
+          with_items: "{{ mnextra }}"
+
+        - name: git prepare mnproto from local
+          tags:
+              - gitup-local
+              - mnproto
+          git:
+              repo: mkushnir@big-1:development/{{ item['name'] }}
+              dest: $HOME/development/{{ item['name'] }}
+              accept_hostkey: yes
+          with_items: "{{ mnproto }}"
+
+        - name: git prepare mndb from local
+          tags:
+              - gitup-local
+              - mndb
+          git:
+              repo: mkushnir@big-1:development/{{ item['name'] }}
+              dest: $HOME/development/{{ item['name'] }}
+              accept_hostkey: yes
+          with_items: "{{ mndb }}"
+
+        - name: git prepare mntest from local
+          tags:
+              - gitup-local
+              - mntest
+          git:
+              repo: mkushnir@big-1:development/{{ item['name'] }}
+              dest: $HOME/development/{{ item['name'] }}
+              accept_hostkey: yes
+          with_items: "{{ mntest }}"
+
+        - name: setup-env init
+          tags:
+              - development-init
+          shell: cd $HOME/development/{{ item['name'] }} && ./setup-env init
+          with_items: "{{ mnbase + mnextra }}"
+
+
+        - name: setup-env dev
+          tags:
+              - development-dev
+          shell: cd $HOME/development/{{ item['name'] }} && ./setup-env {{ item.get('dev', 'dev') }}
+          with_items: "{{ mnbase + mnextra }}"
+
+
+        - name: make clean
+          tags:
+              - development-clean
+          shell: cd $HOME/development/{{ item['name'] }} && make clean
+          with_items: "{{ mnbase + mnextra }}"
+
+        - name: make install
+          tags:
+              - development-install
+          shell: cd $HOME/development/{{ item['name'] }} && make install
+          with_items: "{{ mnbase + mnextra }}"
+
+
+
+        - name: git prepare mnbase from github.com
           tags: gitup-gh
           git:
-              repo: mkushnir@github.com:{{ item }}.git
-              dest: $HOME/development/{{ item }}
+              repo: mkushnir@github.com:{{ item['name'] }}.git
+              dest: $HOME/development/{{ item['name'] }}
               accept_hostkey: yes
           with_items: "{{ mnbase }}"
 
-        - name: init project
-          tags: mn-init
+        #- name: init project
+        #  tags: mn-init
 

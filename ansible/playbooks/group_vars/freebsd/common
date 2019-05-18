@@ -3,15 +3,18 @@ ansible_python_interpreter: /usr/local/bin/python
 ruser: root
 openjdk: openjdk8
 devtools:
+    - git
     - autotools
     - pkgconf
+    - bison
+
 editor: vim-console
+
 mndeps:
     - libyaml
 
 appdeps:
     - ffmpeg
 
-timepackage: ntpdate
+#timepackage: ntpdate
 timesync: ntpdate {{ timeserver }}
-
