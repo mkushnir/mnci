@@ -27,15 +27,15 @@ help:
 #
 damage: clean-check-env
 
-purge: clean-check-env mndiag-purge mrkcommon-purge mrkl4c-purge mrkthr-purge mrkapp-purge
+purge: clean-check-env mndiag-purge mrkcommon-purge mrkl4c-purge mrkthr-purge mrkapp-purge mnlipc-purge
 
-clean: mndiag-purge mrkcommon-purge mrkl4c-purge mrkthr-purge mrkapp-purge
+clean: mndiag-purge mrkcommon-purge mrkl4c-purge mrkthr-purge mrkapp-purge mnlipc-purge
 
-all-init: mndiag-init mrkcommon-init mrkl4c-init mrkthr-init mrkapp-init
+all-init: mndiag-init mrkcommon-init mrkl4c-init mrkthr-init mrkapp-init mnlipc-init
 
-all-dev: mndiag-dev mrkcommon-dev mrkl4c-dev mrkthr-dev mrkapp-dev
+all-dev: mndiag-dev mrkcommon-dev mrkl4c-dev mrkthr-dev mrkapp-dev mnlipc-dev
 
-all-dev-ndebug: mndiag-dev-ndebug mrkcommon-dev-ndebug mrkl4c-dev-ndebug mrkthr-dev-ndebug mrkapp-dev-ndebug
+all-dev-ndebug: mndiag-dev-ndebug mrkcommon-dev-ndebug mrkl4c-dev-ndebug mrkthr-dev-ndebug mrkapp-dev-ndebug mnlipc-dev-ndebug
 
 
 
@@ -60,3 +60,4 @@ include Makefile.mrkcommon
 include Makefile.mrkl4c
 include Makefile.mrkthr
 include Makefile.mrkapp
+include Makefile.mnlipc
