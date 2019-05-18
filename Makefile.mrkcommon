@@ -63,11 +63,11 @@ ${_mrkcommon_dev_ndebug_done}: ${_mrkcommon_setup_dev_ndebug_done} ${_mrkcommon_
 mrkcommon-dev-ndebug: mndiag-dev-ndebug ${_mrkcommon_dev_ndebug_done}
 	@echo $@ done
 
-clean-mrkcommon: ${_check_env_done}
+mrkcommon-purge: ${_check_env_done}
 	@echo making $@
 	@cd ${R}/mrkcommon && make clean
 	@rm -Rf ${_mrkcommon_build_done}
 
-purge-mrkcommon: clean-check-env
+mrkcommon-purge: clean-check-env
 	@echo making $@
 	@rm -Rf "${R}/mrkcommon" ${_mrkcommon_done}

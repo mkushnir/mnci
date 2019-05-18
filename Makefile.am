@@ -27,9 +27,9 @@ help:
 #
 damage: clean-check-env
 
-purge: clean-check-env purge-mndiag purge-mrkcommon purge-mrkl4c purge-mrkthr purge-mrkapp
+purge: clean-check-env mndiag-purge mrkcommon-purge mrkl4c-purge mrkthr-purge mrkapp-purge
 
-clean: clean-mndiag clean-mrkcommon clean-mrkl4c clean-mrkthr clean-mrkapp
+clean: mndiag-purge mrkcommon-purge mrkl4c-purge mrkthr-purge mrkapp-purge
 
 all-init: mndiag-init mrkcommon-init mrkl4c-init mrkthr-init mrkapp-init
 
