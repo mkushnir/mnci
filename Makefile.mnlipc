@@ -31,7 +31,7 @@ ${_mnlipc_setup_dev_done}: ${_mnlipc_setup_init_done}
 
 ${_mnlipc_setup_dev_ndebug_done}: ${_mnlipc_setup_init_done}
 	@cd ${R}/mnlipc && make distclean || true
-	@cd ${R}/mnlipc && ./setup-env dev-pthread-ndebug
+	@cd ${R}/mnlipc && ./setup-env dev-ndebug-pthread
 	@touch ${_mnlipc_setup_dev_ndebug_done}
 
 ${_mnlipc_build_done}: ${_mnlipc_fetch_done}
