@@ -9,6 +9,7 @@ editor: vim-minimal
 mndeps:
     - libyaml-devel
     - libev-devel
+    - flex-devel
 appdeps:
     - libpcap-devel
 

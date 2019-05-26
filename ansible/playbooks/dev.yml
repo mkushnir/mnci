@@ -62,29 +62,36 @@
         - name: setup-env init
           tags:
               - development-init
-          shell: cd $HOME/development/{{ item['name'] }} && ./setup-env init
+          shell: PATH=$HOME/bin:$PATH; cd $HOME/development/{{ item['name'] }} && ./setup-env init
           with_items: "{{ mnbase + mnextra }}"
 
 
         - name: setup-env dev
           tags:
               - development-dev
-          shell: cd $HOME/development/{{ item['name'] }} && ./setup-env {{ item.get('dev', 'dev') }}
+          shell: PATH=$HOME/bin:$PATH; cd $HOME/development/{{ item['name'] }} && ./setup-env {{ item.get('dev', 'dev') }}
           with_items: "{{ mnbase + mnextra }}"
 
 
         - name: make clean
           tags:
               - development-clean
-          shell: cd $HOME/development/{{ item['name'] }} && make clean
+          shell: PATH=$HOME/bin:$PATH; cd $HOME/development/{{ item['name'] }} && make clean
           with_items: "{{ mnbase + mnextra }}"
 
         - name: make install
           tags:
               - development-install
-          shell: cd $HOME/development/{{ item['name'] }} && make install
+          shell: PATH=$HOME/bin:$PATH; cd $HOME/development/{{ item['name'] }} && make install
           with_items: "{{ mnbase + mnextra }}"
 
+        - name: purge installed
+          tags:
+              - development-clean
+          #shell: rm -Rf $HOME/include/mrk* $HOME/include/mn* $HOME/lib/libmrk* $HOME/lib/mn*
+          file:
+              path: $HOME/include/mrk* $HOME/include/mn* $HOME/lib/libmrk* $HOME/lib/libmn*
+              state: absent
 
 
         - name: git prepare mnbase from github.com
