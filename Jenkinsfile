@@ -6,7 +6,7 @@ pipeline {
                 parallel (
                     'archlinux': {
                         node('archlinux') {
-                            build job: 'test-platform',
+                            build job: 'mndev-platform',
                             parameters: [
                                 [$class: 'LabelParameterValue', name: 'mylabel', label: 'archlinux'], string('name': 'setupenv', 'value': params.setupenv), string('name': 'module', 'value': params.module)
                             ]
@@ -14,7 +14,7 @@ pipeline {
                     },
                     'centos': {
                         node('centos') {
-                            build job: 'test-platform',
+                            build job: 'mndev-platform',
                             parameters: [
                                 [$class: 'LabelParameterValue', name: 'mylabel', label: 'centos'], string('name': 'setupenv', 'value': params.setupenv), string('name': 'module', 'value': params.module)
                             ]
@@ -22,7 +22,7 @@ pipeline {
                     },
                     'freebsd': {
                         node('freebsd') {
-                            build job: 'test-platform',
+                            build job: 'mndev-platform',
                             parameters: [
                                 [$class: 'LabelParameterValue', name: 'mylabel', label: 'freebsd'], string('name': 'setupenv', 'value': params.setupenv), string('name': 'module', 'value': params.module)
                             ]

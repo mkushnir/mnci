@@ -3,3 +3,92 @@
 make help
 make MODULE-init
 
+
+Jenkins setup.  Plugins:
+
+    - SSH
+    - SSH Slaves
+    - Git
+    - Pipeline
+    - SSH Agent
+    - Node And Labale Parameter
+
+
+Credentials:
+    SSH Private key: ~/.ssh/id_rsa-jenkins-test
+
+Nodes:
+    name: vm-101
+    executors: 16
+    remote root: /home/jenkins
+    labels: freebsd/archlinus/centos
+    usage: only buildjobs with label expressions matching this node
+    launch method: agent via ssh
+    host: vm-101
+    credentials: jenkins
+    host key verification strategy: not verifying
+    availability: keep as much as possible
+
+Nodes/Configure:
+    Preventive Node monitoring:
+        Clock Difference: off
+        Free Tem Space/Free Space Threshold: 128MB
+
+
+Jobs:
+
+    Free Style Project
+        name: mndev-platform
+        Discard old builds
+        Project is parameterized:
+            - LabelParameterValue mylabel
+            - string setupenv
+            - string module
+
+        Execute concurrent builds if necessary
+
+    Source Code Management:
+        Git:
+            url: mkushnir@big-1:development/mnci
+            credentials: jenkins
+
+    Build Environment:
+        SSH Agent:
+            Credentials: jenkins
+
+    Build:
+        Execute Shell:
+
+export HOME=$WORKSPACE/stage
+mkdir -p $HOME
+PATH=$HOME/bin:$PATH
+
+export BUILDROOT=$WORKSPACE/qwe
+mkdir -p $BUILDROOT
+
+./setup-env init
+
+make ${module}-${setupenv}
+
+
+    Pipeline
+        name: mndev
+        Discard old builds
+        Project is parameterized:
+            - Choice: module
+              - mndiag
+              - mrkcommon
+              - mrkl4c
+              - mrkthr
+              - mrkapp
+              - mnlipc
+              - mrkprotobuf
+            - Choice: setupenv
+              - init
+              - dev
+              - dev-ndebug
+
+        Pipeline Script From CSM:
+            git:
+                url: mkushnir@big-1:development/mnci
+                credentials: jenkins
