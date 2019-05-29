@@ -10,6 +10,7 @@ mndeps:
     - libyaml-devel
     - libev-devel
     - flex-devel
+    - zlib-devel
 appdeps:
     - libpcap-devel
 
