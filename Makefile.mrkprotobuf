@@ -63,7 +63,7 @@ ${_mrkprotobuf_dev_ndebug_done}: ${_mrkprotobuf_setup_dev_ndebug_done} ${_mrkpro
 mrkprotobuf-dev-ndebug: mrkcommon-dev-ndebug ${_mrkprotobuf_dev_ndebug_done}
 	@echo $@ done
 
-mrkprotobuf-purge: ${_check_env_done}
+mrkprotobuf-clean: ${_check_env_done}
 	@echo making $@
 	@cd ${R}/mrkprotobuf && make clean
 	@rm -Rf ${_mrkprotobuf_build_done}

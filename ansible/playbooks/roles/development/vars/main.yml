@@ -54,5 +54,9 @@ mntest:
       name: test-pcap
     - 
       name: mnsip
+    - 
+      name: mnmath
+    - 
+      name: mnann
 
 

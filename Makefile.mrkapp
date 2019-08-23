@@ -63,7 +63,7 @@ ${_mrkapp_dev_ndebug_done}: ${_mrkapp_setup_dev_ndebug_done} ${_mrkapp_install_d
 mrkapp-dev-ndebug: mrkcommon-dev-ndebug mrkthr-dev-ndebug ${_mrkapp_dev_ndebug_done}
 	@echo $@ done
 
-mrkapp-purge: ${_check_env_done}
+mrkapp-clean: ${_check_env_done}
 	@echo making $@
 	@cd ${R}/mrkapp && make clean
 	@rm -Rf ${_mrkapp_build_done}

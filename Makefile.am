@@ -36,13 +36,13 @@ purge: clean-check-env \
        mnlipc-purge \
        mrkprotobuf-purge
 
-clean: mndiag-purge \
-       mrkcommon-purge \
-       mrkl4c-purge \
-       mrkthr-purge \
-       mrkapp-purge \
-       mnlipc-purge \
-       mrkprotobuf-purge
+clean: mndiag-clean \
+       mrkcommon-clean \
+       mrkl4c-clean \
+       mrkthr-clean \
+       mrkapp-clean \
+       mnlipc-clean \
+       mrkprotobuf-clean
 
 all-init: mndiag-init \
     	  mrkcommon-init \

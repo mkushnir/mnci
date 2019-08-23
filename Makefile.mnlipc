@@ -63,7 +63,7 @@ ${_mnlipc_dev_ndebug_done}: ${_mnlipc_setup_dev_ndebug_done} ${_mnlipc_install_d
 mnlipc-dev-ndebug: mrkcommon-dev-ndebug ${_mnlipc_dev_ndebug_done}
 	@echo $@ done
 
-mnlipc-purge: ${_check_env_done}
+mnlipc-clean: ${_check_env_done}
 	@echo making $@
 	@cd ${R}/mnlipc && make clean
 	@rm -Rf ${_mnlipc_build_done}

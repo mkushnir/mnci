@@ -22,7 +22,7 @@ Nodes:
     executors: 16
     remote root: /home/jenkins
     labels: freebsd/archlinus/centos
-    usage: only buildjobs with label expressions matching this node
+    usage: only build jobs with label expressions matching this node
     launch method: agent via ssh
     host: vm-101
     credentials: jenkins
@@ -32,7 +32,7 @@ Nodes:
 Nodes/Configure:
     Preventive Node monitoring:
         Clock Difference: off
-        Free Tem Space/Free Space Threshold: 128MB
+        Free Temp Space/Free Space Threshold: 128MB
 
 
 Jobs:

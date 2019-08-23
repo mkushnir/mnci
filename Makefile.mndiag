@@ -67,7 +67,7 @@ mndiag-dev-ndebug: ${_mndiag_dev_ndebug_done}
 	@echo $@ done
 
 
-mndiag-purge: ${_check_env_done}
+mndiag-clean: ${_check_env_done}
 	@echo making $@
 	cd ${R}/mndiag && make clean
 	rm -Rf ${_mndiag_build_done}

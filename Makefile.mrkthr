@@ -63,7 +63,7 @@ ${_mrkthr_dev_ndebug_done}: ${_mrkthr_setup_dev_ndebug_done} ${_mrkthr_install_d
 mrkthr-dev-ndebug: mrkcommon-dev-ndebug ${_mrkthr_dev_ndebug_done}
 	@echo $@ done
 
-mrkthr-purge: ${_check_env_done}
+mrkthr-clean: ${_check_env_done}
 	@echo making $@
 	@cd ${R}/mrkthr && make clean
 	@rm -Rf ${_mrkthr_build_done}

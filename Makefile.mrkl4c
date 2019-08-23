@@ -63,7 +63,7 @@ ${_mrkl4c_dev_ndebug_done}: ${_mrkl4c_setup_dev_ndebug_done} ${_mrkl4c_install_d
 mrkl4c-dev-ndebug: mrkcommon-dev-ndebug ${_mrkl4c_dev_ndebug_done}
 	@echo $@ done
 
-mrkl4c-purge: ${_check_env_done}
+mrkl4c-clean: ${_check_env_done}
 	@echo making $@
 	@cd ${R}/mrkl4c && make clean
 	@rm -Rf ${_mrkl4c_build_done}
