@@ -77,12 +77,12 @@ make ${module}-${setupenv}
         Project is parameterized:
             - Choice: module
               - mndiag
-              - mrkcommon
-              - mrkl4c
-              - mrkthr
-              - mrkapp
+              - mncommon
+              - mnl4c
+              - mnthr
+              - mnapp
               - mnlipc
-              - mrkprotobuf
+              - mnprotobuf
             - Choice: setupenv
               - init
               - dev

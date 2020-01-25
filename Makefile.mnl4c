@@ -1,0 +1,74 @@
+_mnl4c_fetch_done=${BUILDROOT}/.mnl4c-fetch.done
+_mnl4c_setup_init_done=${BUILDROOT}/.mnl4c-setup-init.done
+_mnl4c_setup_dev_done=${BUILDROOT}/.mnl4c-setup-dev.done
+_mnl4c_setup_dev_ndebug_done=${BUILDROOT}/.mnl4c-setup-dev-ndebug.done
+_mnl4c_build_done=${BUILDROOT}/.mnl4c-build.done
+_mnl4c_install_done=${BUILDROOT}/.mnl4c-install.done
+_mnl4c_init_done=${BUILDROOT}/.mnl4c-init.done
+_mnl4c_dev_done=${BUILDROOT}/.mnl4c-dev.done
+_mnl4c_dev_ndebug_done=${BUILDROOT}/.mnl4c-dev-ndebug.done
+_mnl4c_done=${BUILDROOT}/.mnl4c.done
+
+
+#
+# mnl4c
+#
+${_mnl4c_fetch_done}: ${_check_env_done}
+	@test -d ${R}/mnl4c || \
+	    ( cd ${R} && git clone mkushnir@big-1:development/mnl4c )
+	@cd ${R}/mnl4c && git pull
+	@touch ${_mnl4c_fetch_done}
+
+${_mnl4c_setup_init_done}: ${_mnl4c_fetch_done}
+	@cd ${R}/mnl4c && make distclean || true
+	@cd ${R}/mnl4c && ./setup-env init
+	@touch ${_mnl4c_setup_init_done}
+
+${_mnl4c_setup_dev_done}: ${_mnl4c_setup_init_done}
+	@cd ${R}/mnl4c && make distclean || true
+	@cd ${R}/mnl4c && ./setup-env dev
+	@touch ${_mnl4c_setup_dev_done}
+
+${_mnl4c_setup_dev_ndebug_done}: ${_mnl4c_setup_init_done}
+	@cd ${R}/mnl4c && make distclean || true
+	@cd ${R}/mnl4c && ./setup-env dev-ndebug
+	@touch ${_mnl4c_setup_dev_ndebug_done}
+
+${_mnl4c_build_done}: ${_mnl4c_fetch_done}
+	@cd ${R}/mnl4c && make
+	@touch ${_mnl4c_build_done}
+
+${_mnl4c_install_done}: ${_mnl4c_fetch_done}
+	@cd ${R}/mnl4c && make install
+	@touch ${_mnl4c_install_done}
+
+${_mnl4c_init_done}: ${_mnl4c_setup_init_done} ${_mnl4c_install_done}
+	@echo making $@ ...
+	@touch ${_mnl4c_init_done}
+
+mnl4c-init: mncommon-init ${_mnl4c_init_done}
+	@echo $@ done
+
+${_mnl4c_dev_done}: ${_mnl4c_setup_dev_done} ${_mnl4c_install_done}
+	@echo making $@ ...
+	@touch ${_mnl4c_dev_done}
+
+mnl4c-dev: mncommon-dev ${_mnl4c_dev_done}
+	@echo $@ done
+
+${_mnl4c_dev_ndebug_done}: ${_mnl4c_setup_dev_ndebug_done} ${_mnl4c_install_done}
+	@echo making $@ ...
+	@touch ${_mnl4c_dev_ndebug_done}
+
+mnl4c-dev-ndebug: mncommon-dev-ndebug ${_mnl4c_dev_ndebug_done}
+	@echo $@ done
+
+mnl4c-clean: ${_check_env_done}
+	@echo making $@
+	@cd ${R}/mnl4c && make clean
+	@rm -Rf ${_mnl4c_build_done}
+
+mnl4c-purge: clean-check-env
+	@echo making $@
+	@rm -Rf "${R}/mnl4c" ${_mnl4c_done}
+

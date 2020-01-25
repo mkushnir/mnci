@@ -1,0 +1,73 @@
+_mncommon_fetch_done=${BUILDROOT}/.mncommon-fetch.done
+_mncommon_setup_init_done=${BUILDROOT}/.mncommon-setup-init.done
+_mncommon_setup_dev_done=${BUILDROOT}/.mncommon-setup-dev.done
+_mncommon_setup_dev_ndebug_done=${BUILDROOT}/.mncommon-setup-dev-ndebug.done
+_mncommon_build_done=${BUILDROOT}/.mncommon-build.done
+_mncommon_install_done=${BUILDROOT}/.mncommon-install.done
+_mncommon_init_done=${BUILDROOT}/.mncommon-init.done
+_mncommon_dev_done=${BUILDROOT}/.mncommon-dev.done
+_mncommon_dev_ndebug_done=${BUILDROOT}/.mncommon-dev-ndebug.done
+_mncommon_done=${BUILDROOT}/.mncommon.done
+
+
+#
+# mncommon
+#
+${_mncommon_fetch_done}: ${_check_env_done}
+	@test -d ${R}/mncommon || \
+	    ( cd ${R} && git clone mkushnir@big-1:development/mncommon )
+	@cd ${R}/mncommon && git pull
+	@touch ${_mncommon_fetch_done}
+
+${_mncommon_setup_init_done}: ${_mncommon_fetch_done}
+	@cd ${R}/mncommon && make distclean || true
+	@cd ${R}/mncommon && ./setup-env init
+	@touch ${_mncommon_setup_init_done}
+
+${_mncommon_setup_dev_done}: ${_mncommon_setup_init_done}
+	@cd ${R}/mncommon && make distclean || true
+	@cd ${R}/mncommon && ./setup-env dev
+	@touch ${_mncommon_setup_dev_done}
+
+${_mncommon_setup_dev_ndebug_done}: ${_mncommon_setup_init_done}
+	@cd ${R}/mncommon && make distclean || true
+	@cd ${R}/mncommon && ./setup-env dev-ndebug
+	@touch ${_mncommon_setup_dev_ndebug_done}
+
+${_mncommon_build_done}: ${_mncommon_fetch_done}
+	@cd ${R}/mncommon && make
+	@touch ${_mncommon_build_done}
+
+${_mncommon_install_done}: ${_mncommon_fetch_done}
+	@cd ${R}/mncommon && make install
+	@touch ${_mncommon_install_done}
+
+${_mncommon_init_done}: ${_mncommon_setup_init_done} ${_mncommon_install_done}
+	@echo making $@ ...
+	@touch ${_mncommon_init_done}
+
+mncommon-init: mndiag-init ${_mncommon_init_done}
+	@echo $@ done
+
+${_mncommon_dev_done}: ${_mncommon_setup_dev_done} ${_mncommon_install_done}
+	@echo making $@ ...
+	@touch ${_mncommon_dev_done}
+
+mncommon-dev: mndiag-dev ${_mncommon_dev_done}
+	@echo $@ done
+
+${_mncommon_dev_ndebug_done}: ${_mncommon_setup_dev_ndebug_done} ${_mncommon_install_done}
+	@echo making $@ ...
+	@touch ${_mncommon_dev_ndebug_done}
+
+mncommon-dev-ndebug: mndiag-dev-ndebug ${_mncommon_dev_ndebug_done}
+	@echo $@ done
+
+mncommon-clean: ${_check_env_done}
+	@echo making $@
+	@cd ${R}/mncommon && make clean
+	@rm -Rf ${_mncommon_build_done}
+
+mncommon-purge: clean-check-env
+	@echo making $@
+	@rm -Rf "${R}/mncommon" ${_mncommon_done}

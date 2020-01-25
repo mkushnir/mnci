@@ -1,0 +1,73 @@
+_mnthr_fetch_done=${BUILDROOT}/.mnthr-fetch.done
+_mnthr_setup_init_done=${BUILDROOT}/.mnthr-setup-init.done
+_mnthr_setup_dev_done=${BUILDROOT}/.mnthr-setup-dev.done
+_mnthr_setup_dev_ndebug_done=${BUILDROOT}/.mnthr-setup-dev-ndebug.done
+_mnthr_build_done=${BUILDROOT}/.mnthr-build.done
+_mnthr_install_done=${BUILDROOT}/.mnthr-install.done
+_mnthr_init_done=${BUILDROOT}/.mnthr-init.done
+_mnthr_dev_done=${BUILDROOT}/.mnthr-dev.done
+_mnthr_dev_ndebug_done=${BUILDROOT}/.mnthr-dev-ndebug.done
+_mnthr_done=${BUILDROOT}/.mnthr.done
+
+
+#
+# mnthr
+#
+${_mnthr_fetch_done}: ${_check_env_done}
+	@test -d ${R}/mnthr || \
+	    ( cd ${R} && git clone mkushnir@big-1:development/mnthr )
+	@cd ${R}/mnthr && git pull
+	@touch ${_mnthr_fetch_done}
+
+${_mnthr_setup_init_done}: ${_mnthr_fetch_done}
+	@cd ${R}/mnthr && make distclean || true
+	@cd ${R}/mnthr && ./setup-env init
+	@touch ${_mnthr_setup_init_done}
+
+${_mnthr_setup_dev_done}: ${_mnthr_setup_init_done}
+	@cd ${R}/mnthr && make distclean || true
+	@cd ${R}/mnthr && ./setup-env dev
+	@touch ${_mnthr_setup_dev_done}
+
+${_mnthr_setup_dev_ndebug_done}: ${_mnthr_setup_init_done}
+	@cd ${R}/mnthr && make distclean || true
+	@cd ${R}/mnthr && ./setup-env dev-ndebug
+	@touch ${_mnthr_setup_dev_ndebug_done}
+
+${_mnthr_build_done}: ${_mnthr_fetch_done}
+	@cd ${R}/mnthr && make
+	@touch ${_mnthr_build_done}
+
+${_mnthr_install_done}: ${_mnthr_fetch_done}
+	@cd ${R}/mnthr && make install
+	@touch ${_mnthr_install_done}
+
+${_mnthr_init_done}: ${_mnthr_setup_init_done} ${_mnthr_install_done}
+	@echo making $@ ...
+	@touch ${_mnthr_init_done}
+
+mnthr-init: mncommon-init ${_mnthr_init_done}
+	@echo $@ done
+
+${_mnthr_dev_done}: ${_mnthr_setup_dev_done} ${_mnthr_install_done}
+	@echo making $@ ...
+	@touch ${_mnthr_dev_done}
+
+mnthr-dev: mncommon-dev ${_mnthr_dev_done}
+	@echo $@ done
+
+${_mnthr_dev_ndebug_done}: ${_mnthr_setup_dev_ndebug_done} ${_mnthr_install_done}
+	@echo making $@ ...
+	@touch ${_mnthr_dev_ndebug_done}
+
+mnthr-dev-ndebug: mncommon-dev-ndebug ${_mnthr_dev_ndebug_done}
+	@echo $@ done
+
+mnthr-clean: ${_check_env_done}
+	@echo making $@
+	@cd ${R}/mnthr && make clean
+	@rm -Rf ${_mnthr_build_done}
+
+mnthr-purge: clean-check-env
+	@echo making $@
+	@rm -Rf "${R}/mnthr" ${_mnthr_done}

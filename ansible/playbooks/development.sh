@@ -7,7 +7,7 @@ pkg install nginx
 
 (
     mkdir development && cd development
-    for i in mndiag mrkcommon mrkthr mrkapp mnfcgi mnhtools
+    for i in mndiag mncommon mnthr mnapp mnfcgi mnhtools
     do
         git clone git@github.com:mkushnir/${i}.git && cd $i && ./do-it init
     done

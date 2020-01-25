@@ -1,0 +1,74 @@
+_mnprotobuf_fetch_done=${BUILDROOT}/.mnprotobuf-fetch.done
+_mnprotobuf_setup_init_done=${BUILDROOT}/.mnprotobuf-setup-init.done
+_mnprotobuf_setup_dev_done=${BUILDROOT}/.mnprotobuf-setup-dev.done
+_mnprotobuf_setup_dev_ndebug_done=${BUILDROOT}/.mnprotobuf-setup-dev-ndebug.done
+_mnprotobuf_build_done=${BUILDROOT}/.mnprotobuf-build.done
+_mnprotobuf_install_done=${BUILDROOT}/.mnprotobuf-install.done
+_mnprotobuf_init_done=${BUILDROOT}/.mnprotobuf-init.done
+_mnprotobuf_dev_done=${BUILDROOT}/.mnprotobuf-dev.done
+_mnprotobuf_dev_ndebug_done=${BUILDROOT}/.mnprotobuf-dev-ndebug.done
+_mnprotobuf_done=${BUILDROOT}/.mnprotobuf.done
+
+
+#
+# mnprotobuf
+#
+${_mnprotobuf_fetch_done}: ${_check_env_done}
+	@test -d ${R}/mnprotobuf || \
+	    ( cd ${R} && git clone mkushnir@big-1:development/mnprotobuf )
+	@cd ${R}/mnprotobuf && git pull
+	@touch ${_mnprotobuf_fetch_done}
+
+${_mnprotobuf_setup_init_done}: ${_mnprotobuf_fetch_done}
+	@cd ${R}/mnprotobuf && make distclean || true
+	@cd ${R}/mnprotobuf && ./setup-env init
+	@touch ${_mnprotobuf_setup_init_done}
+
+${_mnprotobuf_setup_dev_done}: ${_mnprotobuf_setup_init_done}
+	@cd ${R}/mnprotobuf && make distclean || true
+	@cd ${R}/mnprotobuf && ./setup-env dev
+	@touch ${_mnprotobuf_setup_dev_done}
+
+${_mnprotobuf_setup_dev_ndebug_done}: ${_mnprotobuf_setup_init_done}
+	@cd ${R}/mnprotobuf && make distclean || true
+	@cd ${R}/mnprotobuf && ./setup-env dev-ndebug
+	@touch ${_mnprotobuf_setup_dev_ndebug_done}
+
+${_mnprotobuf_build_done}: ${_mnprotobuf_fetch_done}
+	@cd ${R}/mnprotobuf && make
+	@touch ${_mnprotobuf_build_done}
+
+${_mnprotobuf_install_done}: ${_mnprotobuf_fetch_done}
+	@cd ${R}/mnprotobuf && make install
+	@touch ${_mnprotobuf_install_done}
+
+${_mnprotobuf_init_done}: ${_mnprotobuf_setup_init_done} ${_mnprotobuf_install_done}
+	@echo making $@ ...
+	@touch ${_mnprotobuf_init_done}
+
+mnprotobuf-init: mncommon-init ${_mnprotobuf_init_done}
+	@echo $@ done
+
+${_mnprotobuf_dev_done}: ${_mnprotobuf_setup_dev_done} ${_mnprotobuf_install_done}
+	@echo making $@ ...
+	@touch ${_mnprotobuf_dev_done}
+
+mnprotobuf-dev: mncommon-dev ${_mnprotobuf_dev_done}
+	@echo $@ done
+
+${_mnprotobuf_dev_ndebug_done}: ${_mnprotobuf_setup_dev_ndebug_done} ${_mnprotobuf_install_done}
+	@echo making $@ ...
+	@touch ${_mnprotobuf_dev_ndebug_done}
+
+mnprotobuf-dev-ndebug: mncommon-dev-ndebug ${_mnprotobuf_dev_ndebug_done}
+	@echo $@ done
+
+mnprotobuf-clean: ${_check_env_done}
+	@echo making $@
+	@cd ${R}/mnprotobuf && make clean
+	@rm -Rf ${_mnprotobuf_build_done}
+
+mnprotobuf-purge: clean-check-env
+	@echo making $@
+	@rm -Rf "${R}/mnprotobuf" ${_mnprotobuf_done}
+

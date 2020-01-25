@@ -1,0 +1,73 @@
+_mnapp_fetch_done=${BUILDROOT}/.mnapp-fetch.done
+_mnapp_setup_init_done=${BUILDROOT}/.mnapp-setup-init.done
+_mnapp_setup_dev_done=${BUILDROOT}/.mnapp-setup-dev.done
+_mnapp_setup_dev_ndebug_done=${BUILDROOT}/.mnapp-setup-dev-ndebug.done
+_mnapp_build_done=${BUILDROOT}/.mnapp-build.done
+_mnapp_install_done=${BUILDROOT}/.mnapp-install.done
+_mnapp_init_done=${BUILDROOT}/.mnapp-init.done
+_mnapp_dev_done=${BUILDROOT}/.mnapp-dev.done
+_mnapp_dev_ndebug_done=${BUILDROOT}/.mnapp-dev-ndebug.done
+_mnapp_done=${BUILDROOT}/.mnapp.done
+
+
+#
+# mnapp
+#
+${_mnapp_fetch_done}: ${_check_env_done}
+	@test -d ${R}/mnapp || \
+	    ( cd ${R} && git clone mkushnir@big-1:development/mnapp )
+	@cd ${R}/mnapp && git pull
+	@touch ${_mnapp_fetch_done}
+
+${_mnapp_setup_init_done}: ${_mnapp_fetch_done}
+	@cd ${R}/mnapp && make distclean || true
+	@cd ${R}/mnapp && ./setup-env init
+	@touch ${_mnapp_setup_init_done}
+
+${_mnapp_setup_dev_done}: ${_mnapp_setup_init_done}
+	@cd ${R}/mnapp && make distclean || true
+	@cd ${R}/mnapp && ./setup-env dev
+	@touch ${_mnapp_setup_dev_done}
+
+${_mnapp_setup_dev_ndebug_done}: ${_mnapp_setup_init_done}
+	@cd ${R}/mnapp && make distclean || true
+	@cd ${R}/mnapp && ./setup-env dev-ndebug
+	@touch ${_mnapp_setup_dev_ndebug_done}
+
+${_mnapp_build_done}: ${_mnapp_fetch_done}
+	@cd ${R}/mnapp && make
+	@touch ${_mnapp_build_done}
+
+${_mnapp_install_done}: ${_mnapp_fetch_done}
+	@cd ${R}/mnapp && make install
+	@touch ${_mnapp_install_done}
+
+${_mnapp_init_done}: ${_mnapp_setup_init_done} ${_mnapp_install_done}
+	@echo making $@ ...
+	@touch ${_mnapp_init_done}
+
+mnapp-init: mncommon-init mnthr-init ${_mnapp_init_done}
+	@echo $@ done
+
+${_mnapp_dev_done}: ${_mnapp_setup_dev_done} ${_mnapp_install_done}
+	@echo making $@ ...
+	@touch ${_mnapp_dev_done}
+
+mnapp-dev: mncommon-dev mnthr-dev ${_mnapp_dev_done}
+	@echo $@ done
+
+${_mnapp_dev_ndebug_done}: ${_mnapp_setup_dev_ndebug_done} ${_mnapp_install_done}
+	@echo making $@ ...
+	@touch ${_mnapp_dev_ndebug_done}
+
+mnapp-dev-ndebug: mncommon-dev-ndebug mnthr-dev-ndebug ${_mnapp_dev_ndebug_done}
+	@echo $@ done
+
+mnapp-clean: ${_check_env_done}
+	@echo making $@
+	@cd ${R}/mnapp && make clean
+	@rm -Rf ${_mnapp_build_done}
+
+mnapp-purge: clean-check-env
+	@echo making $@
+	@rm -Rf "${R}/mnapp" ${_mnapp_done}

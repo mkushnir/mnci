@@ -13,10 +13,10 @@ help:
 	@echo "Targets:"
 	@echo "	print-env"
 	@echo "	[clean-]mndiag[-init|-dev[-ndebug]]"
-	@echo "	[clean-]mrkcommon[-init|-dev[-ndebug]]"
-	@echo "	[clean-]mrkl4c[-init|-dev[-ndebug]]"
-	@echo "	[clean-]mrkthr[-init|-dev[-ndebug]]"
-	@echo "	[clean-]mrkapp[-init|-dev[-ndebug]]"
+	@echo "	[clean-]mncommon[-init|-dev[-ndebug]]"
+	@echo "	[clean-]mnl4c[-init|-dev[-ndebug]]"
+	@echo "	[clean-]mnthr[-init|-dev[-ndebug]]"
+	@echo "	[clean-]mnapp[-init|-dev[-ndebug]]"
 	@echo "	damage"
 	@echo "	clean"
 	@echo "	all"
@@ -29,44 +29,44 @@ damage: clean-check-env
 
 purge: clean-check-env \
        mndiag-purge \
-       mrkcommon-purge \
-       mrkl4c-purge \
-       mrkthr-purge \
-       mrkapp-purge \
+       mncommon-purge \
+       mnl4c-purge \
+       mnthr-purge \
+       mnapp-purge \
        mnlipc-purge \
-       mrkprotobuf-purge
+       mnprotobuf-purge
 
 clean: mndiag-clean \
-       mrkcommon-clean \
-       mrkl4c-clean \
-       mrkthr-clean \
-       mrkapp-clean \
+       mncommon-clean \
+       mnl4c-clean \
+       mnthr-clean \
+       mnapp-clean \
        mnlipc-clean \
-       mrkprotobuf-clean
+       mnprotobuf-clean
 
 all-init: mndiag-init \
-    	  mrkcommon-init \
-	  mrkl4c-init \
-	  mrkthr-init \
-	  mrkapp-init \
+    	  mncommon-init \
+	  mnl4c-init \
+	  mnthr-init \
+	  mnapp-init \
 	  mnlipc-init \
-	  mrkprotobuf-init
+	  mnprotobuf-init
 
 all-dev: mndiag-dev \
-    	 mrkcommon-dev \
-	 mrkl4c-dev \
-	 mrkthr-dev \
-	 mrkapp-dev \
+    	 mncommon-dev \
+	 mnl4c-dev \
+	 mnthr-dev \
+	 mnapp-dev \
 	 mnlipc-dev \
-	 mrkprotobuf-dev
+	 mnprotobuf-dev
 
 all-dev-ndebug: mndiag-dev-ndebug \
-    		mrkcommon-dev-ndebug \
-		mrkl4c-dev-ndebug \
-		mrkthr-dev-ndebug \
-		mrkapp-dev-ndebug \
+    		mncommon-dev-ndebug \
+		mnl4c-dev-ndebug \
+		mnthr-dev-ndebug \
+		mnapp-dev-ndebug \
 		mnlipc-dev-ndebug \
-		mrkprotobuf-dev-ndebug
+		mnprotobuf-dev-ndebug
 
 
 
@@ -87,9 +87,9 @@ clean-check-env:
 	@rm _Rf ${_check_env_done}
 
 include Makefile.mndiag
-include Makefile.mrkcommon
-include Makefile.mrkl4c
-include Makefile.mrkthr
-include Makefile.mrkapp
+include Makefile.mncommon
+include Makefile.mnl4c
+include Makefile.mnthr
+include Makefile.mnapp
 include Makefile.mnlipc
-include Makefile.mrkprotobuf
+include Makefile.mnprotobuf

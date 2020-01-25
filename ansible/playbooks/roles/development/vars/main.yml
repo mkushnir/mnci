@@ -8,28 +8,28 @@ mnbase:
     - 
       name: mndiag
     - 
-      name: mrkcommon
+      name: mncommon
     - 
-      name: mrkl4c
+      name: mnl4c
     - 
-      name: mrkthr
+      name: mnthr
     - 
-      name: mrkapp
+      name: mnapp
 
 mnextra:
     - 
-      name: mrkprotobuf
+      name: mnprotobuf
     - 
       name: mnspinfo
     - 
-      name: mrkyaml
+      name: mnyaml
     - 
       name: mnlipc
       dev: dev-pthread
 
 mnproto:
     - 
-      name: mrkamqp
+      name: mnamqp
     - 
       name: mnfcgi
     - 
@@ -37,15 +37,15 @@ mnproto:
 
 mndb:
     - 
-      name: mrkpq
+      name: mnpq
     - 
-      name: mrkdata
+      name: mndata
     - 
-      name: mrkdb
+      name: mndb
     - 
-      name: mrkrpc
+      name: mnrpc
     - 
-      name: mrkdht
+      name: mndht
 
 mntest:
     - 

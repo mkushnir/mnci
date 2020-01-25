@@ -88,9 +88,9 @@
         - name: purge installed
           tags:
               - development-clean
-          #shell: rm -Rf $HOME/include/mrk* $HOME/include/mn* $HOME/lib/libmrk* $HOME/lib/mn*
+          #shell: rm -Rf $HOME/include/mn* $HOME/lib/libmn* $HOME/lib/mn*
           file:
-              path: $HOME/include/mrk* $HOME/include/mn* $HOME/lib/libmrk* $HOME/lib/libmn*
+              path: $HOME/include/mn* $HOME/lib/libmn*
               state: absent
 
 
