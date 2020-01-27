@@ -12,6 +12,7 @@ pipeline {
                             ]
                         }
                     },
+                    /*
                     'centos': {
                         node('centos') {
                             build job: 'mndev-platform',
@@ -20,6 +21,7 @@ pipeline {
                             ]
                         }
                     },
+                    */
                     'freebsd': {
                         node('freebsd') {
                             build job: 'mndev-platform',
