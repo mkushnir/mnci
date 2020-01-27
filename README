@@ -12,6 +12,8 @@ Jenkins setup.  Plugins:
     - Pipeline
     - SSH Agent
     - Node And Label Parameter
+    - Configuration as Code Support ?
+    - ThinBackup
 
 
 Credentials:
