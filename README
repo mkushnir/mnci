@@ -11,7 +11,7 @@ Jenkins setup.  Plugins:
     - Git
     - Pipeline
     - SSH Agent
-    - Node And Labale Parameter
+    - Node And Label Parameter
 
 
 Credentials:
@@ -29,7 +29,7 @@ Nodes:
     host key verification strategy: not verifying
     availability: keep as much as possible
 
-Nodes/Configure:
+Nodes/Node Monitoring:
     Preventive Node monitoring:
         Clock Difference: off
         Free Temp Space/Free Space Threshold: 128MB
@@ -88,7 +88,7 @@ make ${module}-${setupenv}
               - dev
               - dev-ndebug
 
-        Pipeline Script From CSM:
+        Pipeline Script From SCM:
             git:
                 url: mkushnir@big-1:development/mnci
                 credentials: jenkins

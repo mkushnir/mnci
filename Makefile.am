@@ -34,6 +34,7 @@ purge: clean-check-env \
        mnthr-purge \
        mnapp-purge \
        mnlipc-purge \
+       mnspinfo-purge \
        mnprotobuf-purge
 
 clean: mndiag-clean \
@@ -42,6 +43,7 @@ clean: mndiag-clean \
        mnthr-clean \
        mnapp-clean \
        mnlipc-clean \
+       mnspinfo-clean \
        mnprotobuf-clean
 
 all-init: mndiag-init \
@@ -50,6 +52,7 @@ all-init: mndiag-init \
 	  mnthr-init \
 	  mnapp-init \
 	  mnlipc-init \
+	  mnspinfo-init \
 	  mnprotobuf-init
 
 all-dev: mndiag-dev \
@@ -58,6 +61,7 @@ all-dev: mndiag-dev \
 	 mnthr-dev \
 	 mnapp-dev \
 	 mnlipc-dev \
+	 mnspinfo-dev \
 	 mnprotobuf-dev
 
 all-dev-ndebug: mndiag-dev-ndebug \
@@ -66,6 +70,7 @@ all-dev-ndebug: mndiag-dev-ndebug \
 		mnthr-dev-ndebug \
 		mnapp-dev-ndebug \
 		mnlipc-dev-ndebug \
+		mnspinfo-dev-ndebug \
 		mnprotobuf-dev-ndebug
 
 
@@ -92,4 +97,5 @@ include Makefile.mnl4c
 include Makefile.mnthr
 include Makefile.mnapp
 include Makefile.mnlipc
+include Makefile.mnspiinfo
 include Makefile.mnprotobuf

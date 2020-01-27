@@ -1,0 +1,74 @@
+_mnspinfo_fetch_done=${BUILDROOT}/.mnspinfo-fetch.done
+_mnspinfo_setup_init_done=${BUILDROOT}/.mnspinfo-setup-init.done
+_mnspinfo_setup_dev_done=${BUILDROOT}/.mnspinfo-setup-dev.done
+_mnspinfo_setup_dev_ndebug_done=${BUILDROOT}/.mnspinfo-setup-dev-ndebug.done
+_mnspinfo_build_done=${BUILDROOT}/.mnspinfo-build.done
+_mnspinfo_install_done=${BUILDROOT}/.mnspinfo-install.done
+_mnspinfo_init_done=${BUILDROOT}/.mnspinfo-init.done
+_mnspinfo_dev_done=${BUILDROOT}/.mnspinfo-dev.done
+_mnspinfo_dev_ndebug_done=${BUILDROOT}/.mnspinfo-dev-ndebug.done
+_mnspinfo_done=${BUILDROOT}/.mnspinfo.done
+
+
+#
+# mnspinfo
+#
+${_mnspinfo_fetch_done}: ${_check_env_done}
+	@test -d ${R}/mnspinfo || \
+	    ( cd ${R} && git clone mkushnir@big-1:development/mnspinfo )
+	@cd ${R}/mnspinfo && git pull
+	@touch ${_mnspinfo_fetch_done}
+
+${_mnspinfo_setup_init_done}: ${_mnspinfo_fetch_done}
+	@cd ${R}/mnspinfo && make distclean || true
+	@cd ${R}/mnspinfo && ./setup-env init
+	@touch ${_mnspinfo_setup_init_done}
+
+${_mnspinfo_setup_dev_done}: ${_mnspinfo_setup_init_done}
+	@cd ${R}/mnspinfo && make distclean || true
+	@cd ${R}/mnspinfo && ./setup-env dev
+	@touch ${_mnspinfo_setup_dev_done}
+
+${_mnspinfo_setup_dev_ndebug_done}: ${_mnspinfo_setup_init_done}
+	@cd ${R}/mnspinfo && make distclean || true
+	@cd ${R}/mnspinfo && ./setup-env dev-ndebug
+	@touch ${_mnspinfo_setup_dev_ndebug_done}
+
+${_mnspinfo_build_done}: ${_mnspinfo_fetch_done}
+	@cd ${R}/mnspinfo && make
+	@touch ${_mnspinfo_build_done}
+
+${_mnspinfo_install_done}: ${_mnspinfo_fetch_done}
+	@cd ${R}/mnspinfo && make install
+	@touch ${_mnspinfo_install_done}
+
+${_mnspinfo_init_done}: ${_mnspinfo_setup_init_done} ${_mnspinfo_install_done}
+	@echo making $@ ...
+	@touch ${_mnspinfo_init_done}
+
+mnspinfo-init: mncommon-init ${_mnspinfo_init_done}
+	@echo $@ done
+
+${_mnspinfo_dev_done}: ${_mnspinfo_setup_dev_done} ${_mnspinfo_install_done}
+	@echo making $@ ...
+	@touch ${_mnspinfo_dev_done}
+
+mnspinfo-dev: mncommon-dev ${_mnspinfo_dev_done}
+	@echo $@ done
+
+${_mnspinfo_dev_ndebug_done}: ${_mnspinfo_setup_dev_ndebug_done} ${_mnspinfo_install_done}
+	@echo making $@ ...
+	@touch ${_mnspinfo_dev_ndebug_done}
+
+mnspinfo-dev-ndebug: mncommon-dev-ndebug ${_mnspinfo_dev_ndebug_done}
+	@echo $@ done
+
+mnspinfo-clean: ${_check_env_done}
+	@echo making $@
+	@cd ${R}/mnspinfo && make clean
+	@rm -Rf ${_mnspinfo_build_done}
+
+mnspinfo-purge: clean-check-env
+	@echo making $@
+	@rm -Rf "${R}/mnspinfo" ${_mnspinfo_done}
+
