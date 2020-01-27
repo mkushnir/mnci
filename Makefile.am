@@ -97,5 +97,5 @@ include Makefile.mnl4c
 include Makefile.mnthr
 include Makefile.mnapp
 include Makefile.mnlipc
-include Makefile.mnspiinfo
+include Makefile.mnspinfo
 include Makefile.mnprotobuf
