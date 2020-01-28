@@ -46,21 +46,21 @@ ${_mnspinfo_init_done}: ${_mnspinfo_setup_init_done} ${_mnspinfo_install_done}
 	@echo making $@ ...
 	@touch ${_mnspinfo_init_done}
 
-mnspinfo-init: mncommon-init ${_mnspinfo_init_done}
+mnspinfo-init: mnapp-init ${_mnspinfo_init_done}
 	@echo $@ done
 
 ${_mnspinfo_dev_done}: ${_mnspinfo_setup_dev_done} ${_mnspinfo_install_done}
 	@echo making $@ ...
 	@touch ${_mnspinfo_dev_done}
 
-mnspinfo-dev: mncommon-dev ${_mnspinfo_dev_done}
+mnspinfo-dev: mnapp-dev ${_mnspinfo_dev_done}
 	@echo $@ done
 
 ${_mnspinfo_dev_ndebug_done}: ${_mnspinfo_setup_dev_ndebug_done} ${_mnspinfo_install_done}
 	@echo making $@ ...
 	@touch ${_mnspinfo_dev_ndebug_done}
 
-mnspinfo-dev-ndebug: mncommon-dev-ndebug ${_mnspinfo_dev_ndebug_done}
+mnspinfo-dev-ndebug: mnapp-dev-ndebug ${_mnspinfo_dev_ndebug_done}
 	@echo $@ done
 
 mnspinfo-clean: ${_check_env_done}
