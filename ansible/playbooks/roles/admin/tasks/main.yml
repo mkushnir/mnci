@@ -13,7 +13,7 @@
   tags:
       - reboot
   command: "/sbin/shutdown -r +1 Reboot by ansible"
-  when: ansible_facts['distribution'] in ('FreeBSD')
+  when: ansible_facts['distribution'] in ('FreeBSD',)
   #when: '"freebsd" in group_names'
   register: rbazf
 
@@ -22,7 +22,7 @@
       - reboot
   become: true
   raw: "/sbin/shutdown -r +1 Reboot by ansible"
-  when: ansible_facts['distribution'] ('Ubuntu', 'CentOS', 'Archlinux')
+  when: ansible_facts['distribution'] in ('Ubuntu', 'CentOS', 'Archlinux')
   register: rbazu
 
 - name: Report

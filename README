@@ -4,7 +4,28 @@ make help
 make MODULE-init
 
 
-Jenkins setup.  Plugins:
+Quick Jenkins Setup
+===================
+
+Before upgrade:
+
+    - update plugins
+    - backup settings with thinBackup (backup location is outside of Jenkins home)
+
+After upgrade:
+    - initialize a fresh Jenkins home (NB: secrets are now reset);
+    - install thinBackup plugin, configure it to the baclup location;
+    - restore backup, including restore plugins; wait until plugins are restored;
+    - service jenkins restart, wait until plugins are initialized;
+    - reset admin password with echo -n admin:admin | sha256 ...;
+    - update (re-new) credentials (jenkins: SSH key id_rsa-jenkins-test);
+    - check node liveness;
+
+
+Manual Jenkins Setup
+====================
+
+Plugins:
 
     - SSH
     - SSH Slaves
@@ -12,7 +33,8 @@ Jenkins setup.  Plugins:
     - Pipeline
     - SSH Agent
     - Node And Label Parameter
-    - Configuration as Code Support ?
+    - Configuration as Code Support ? (not needed)
+    - Workspace Cleanup
     - ThinBackup
 
 
@@ -94,3 +116,4 @@ make ${module}-${setupenv}
             git:
                 url: mkushnir@big-1:development/mnci
                 credentials: jenkins
+

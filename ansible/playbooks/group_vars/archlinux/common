@@ -6,11 +6,10 @@ devtools:
     - base-devel
     - libyaml
     - libev
-editor: vim-minimal
+editor: vim
 mndeps:
     - libyaml
     - libev
-
 appdeps:
     - libpcap
     - ffmpeg
