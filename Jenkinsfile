@@ -5,9 +5,11 @@ pipeline {
             parallel {
                 stage('archlinux') {
                     agent {label 'archlinux'}
+                    /*
                     options {
-                        timeout(time: 7, unit: 'MINUTES')
+                        timeout(time: 30, unit: 'MINUTES')
                     }
+                    */
                     steps {
                         build job: 'mndev-platform',
                         parameters: [
@@ -18,9 +20,11 @@ pipeline {
                 /*
                 stage('centos') {
                     agent {label 'centos'}
+                    /*
                     options {
-                        timeout(time: 4, unit: 'MINUTES')
+                        timeout(time: 30, unit: 'MINUTES')
                     }
+                    */
                     steps {
                         build job: 'mndev-platform',
                         parameters: [
@@ -31,9 +35,11 @@ pipeline {
                 */
                 stage('freebsd') {
                     agent {label 'freebsd'}
+                    /*
                     options {
-                        timeout(time: 7, unit: 'MINUTES')
+                        timeout(time: 30, unit: 'MINUTES')
                     }
+                    */
                     steps {
                         build job: 'mndev-platform',
                         parameters: [
