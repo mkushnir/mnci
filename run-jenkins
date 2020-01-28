@@ -1,0 +1,102 @@
+#!/bin/sh
+
+die() {
+    local code=$1
+    shift
+    echo $*
+    exit $code
+}
+
+
+is_running() {
+    cat $1 | python -c 'import sys,json;print("yes" if "executable" in json.load(sys.stdin) else "no")'
+}
+
+
+wait_for_start() {
+    local out qurl
+    out=$1
+    qurl="`sed -n -E -e 's/^Location:(.*)[[:cntrl:]]+$/\1/p' $out`"
+    qurl="`echo $qurl | sed 's/\\/$//'`"
+    #echo 'out >>>'
+    #cat $out
+    #echo '<<<'
+    while true
+    do
+        curl -q -s --user $user:$token ${qurl}/api/json >out.wfs
+        isrunning=`is_running out.wfs`
+        if test "$isrunning" = yes
+        then
+            break
+        elif test "$isrunning" = no
+        then
+            continue
+        else
+            echo exception breaking out
+            break
+        fi
+        sleep 2
+    done
+    rm -f out.wfs
+}
+
+
+bnp=http://big-1:8180/jenkins/job/mndev/build
+bwp=http://big-1:8180/jenkins/job/mndev/buildWithParameters
+pvc=http://big-1:8180/jenkins/pluginManager/prevalidateConfig
+inp=http://big-1:8180/jenkins/pluginManager/installNecessaryPlugins
+ucp=http://big-1:8180/jenkins/updateCenter/site/default/plugin/.../api/json?depth=1
+
+user=admin
+token=11849bbac29f35af1e66fcc95b08c7923f
+
+#set -x
+if test "$1" = run
+then
+    #envs="init"
+    envs="init dev dev-ndebug"
+    modules="mndiag mncommon mnl4c mnthr mnapp mnlipc mnspinfo mnprotobuf"
+
+    # XXX convert ot pipeline matrix
+    for env in $envs
+    do
+        for mod in $modules
+        do
+            echo ======= $env $mod
+            #form="{\"parameter\":[{\"name\":\"module\",\"value\":\"$mod\"},{\"name\":\"setupenv\",\"value\":\"$env\"}],\"delay\":10sec}"
+            #curl -q -s --dump-header out --user $user:$token --data-urlencode "json=$form" ${bnp}
+            form="module=${mod}&setupenv=${env}"
+            curl -q -s --dump-header out -X POST --user $user:$token "${bwp}?${form}"
+            wait_for_start out
+        done
+    done
+
+    #module=mndiag
+    #setupenv=init
+    #form="{\"parameter\":[{\"module\":\"$module\"},{\"setupenv\":\"$setupenv\"}]}"
+    #curl -v --dump-header out  --user $user:$token --data-urlencode "json=$form" $bwp
+    #wait_for_start out
+
+elif test "$1" = validate
+then
+    fname=$2
+    if test -f "$fname"
+    then
+        curl -v --user $user:$token --data @$fname $pvc
+    else
+        die 1 "no such file: $fname"
+    fi
+
+elif test "$1" = install
+then
+    fname=$2
+    if test -f "$fname"
+    then
+        curl -v --user $user:$token --data @$fname $inp
+    else
+        die 1 "no such file: $fname"
+    fi
+
+else
+    die 1 "invalid command: $1"
+fi
