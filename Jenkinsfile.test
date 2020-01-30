@@ -1,0 +1,10 @@
+pipeline {
+    agent none
+    stages {
+        stage('s0') {
+            steps {
+                echo "params: ${params.module} ${params.setupenv}"
+            }
+        }
+    }
+}
