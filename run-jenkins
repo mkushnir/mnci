@@ -55,7 +55,7 @@ if test "$1" = run
 then
     #envs="init"
     envs="init dev dev-ndebug"
-    modules="mndiag mncommon mnl4c mnthr mnapp mnlipc mnspinfo mnprotobuf"
+    modules="mndiag mncommon mnl4c mnthr mnapp mnyaml mnspinfo mnprotobuf mnmath mnlipc"
 
     # XXX convert ot pipeline matrix
     for env in $envs

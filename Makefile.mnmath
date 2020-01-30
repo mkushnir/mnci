@@ -46,21 +46,21 @@ ${_mnmath_init_done}: ${_mnmath_setup_init_done} ${_mnmath_install_done}
 	@echo making $@ ...
 	@touch ${_mnmath_init_done}
 
-mnmath-init: mncommon-init ${_mnmath_init_done}
+mnmath-init: mnprotobuf-init mnapp-init ${_mnmath_init_done}
 	@echo $@ done
 
 ${_mnmath_dev_done}: ${_mnmath_setup_dev_done} ${_mnmath_install_done}
 	@echo making $@ ...
 	@touch ${_mnmath_dev_done}
 
-mnmath-dev: mncommon-dev ${_mnmath_dev_done}
+mnmath-dev: mnprotobuf-dev mnapp-dev ${_mnmath_dev_done}
 	@echo $@ done
 
 ${_mnmath_dev_ndebug_done}: ${_mnmath_setup_dev_ndebug_done} ${_mnmath_install_done}
 	@echo making $@ ...
 	@touch ${_mnmath_dev_ndebug_done}
 
-mnmath-dev-ndebug: mncommon-dev-ndebug ${_mnmath_dev_ndebug_done}
+mnmath-dev-ndebug: mnprotobuf-dev-ndebug mnapp-dev-ndebug ${_mnmath_dev_ndebug_done}
 	@echo $@ done
 
 mnmath-clean: ${_check_env_done}
