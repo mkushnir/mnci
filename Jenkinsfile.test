@@ -4,9 +4,28 @@ pipeline {
         parallelsAlwaysFailFast()
     }
     stages {
-        stage('s0') {
-            steps {
-                echo "params: ${params.module} ${params.setupenv}"
+        stage('p0') {
+            parallel {
+                stage('a') {
+                    agent {label 'archlinux'}
+                    steps {
+                        echo "params @archlinux: ${params.module} ${params.setupenv}"
+                        build job: 'mndev-test-platform',
+                        parameters: [
+                            [$class: 'LabelParameterValue', name: 'mylabel', label: 'archlinux'], string('name': 'setupenv', 'value': params.setupenv), string('name': 'module', 'value': params.module)
+                        ]
+                    }
+                }
+                stage('f') {
+                    agent {label 'freebsd'}
+                    steps {
+                        echo "params @freebsd: ${params.module} ${params.setupenv}"
+                        build job: 'mndev-test-platform',
+                        parameters: [
+                            [$class: 'LabelParameterValue', name: 'mylabel', label: 'freebsd'], string('name': 'setupenv', 'value': params.setupenv), string('name': 'module', 'value': params.module)
+                        ]
+                    }
+                }
             }
         }
     }
