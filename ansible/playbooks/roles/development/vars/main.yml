@@ -1,67 +1,67 @@
 mydeps:
-    - 
-      name: libyaml
-    - 
+    -
       name: libev
-    - 
+    -
+      name: libyaml
+    -
       name: graphviz
 
 mnbase:
-    - 
+    -
       name: mndiag
-    - 
+    -
       name: mncommon
-    - 
+    -
       name: mnl4c
-    - 
+    -
       name: mnthr
-    - 
+    -
       name: mnapp
 
 mnextra:
-    - 
-      name: mnspinfo
-    - 
-      name: mnprotobuf
-    - 
-      name: mnmath
-    - 
+    -
       name: mnyaml
-    - 
+    -
+      name: mnspinfo
+    -
+      name: mnprotobuf
+    -
+      name: mnmath
+    -
       name: mnlipc
       dev: dev-pthread
 
 mnproto:
-    - 
+    -
       name: mnamqp
-    - 
+    -
       name: mnfcgi
-    - 
+    -
       name: mnredis
     # stalled
-    #- 
+    #-
     #  name: mnsip
 
 mndb:
-    - 
+    -
       name: mnpq
-    - 
+    -
       name: mndata
-    - 
+    -
       name: mndb
-    - 
+    -
       name: mnrpc
-    - 
+    -
       name: mndht
 
 mntest:
-    - 
+    -
       name: test-pipe
-    - 
+    -
       name: test-pcap
-    - 
+    -
       name: mnann
-    - 
+    -
       name: mnwm
 
 
