@@ -1,0 +1,74 @@
+_mnyaml_fetch_done=${BUILDROOT}/.mnyaml-fetch.done
+_mnyaml_setup_init_done=${BUILDROOT}/.mnyaml-setup-init.done
+_mnyaml_setup_dev_done=${BUILDROOT}/.mnyaml-setup-dev.done
+_mnyaml_setup_dev_ndebug_done=${BUILDROOT}/.mnyaml-setup-dev-ndebug.done
+_mnyaml_build_done=${BUILDROOT}/.mnyaml-build.done
+_mnyaml_install_done=${BUILDROOT}/.mnyaml-install.done
+_mnyaml_init_done=${BUILDROOT}/.mnyaml-init.done
+_mnyaml_dev_done=${BUILDROOT}/.mnyaml-dev.done
+_mnyaml_dev_ndebug_done=${BUILDROOT}/.mnyaml-dev-ndebug.done
+_mnyaml_done=${BUILDROOT}/.mnyaml.done
+
+
+#
+# mnyaml
+#
+${_mnyaml_fetch_done}: ${_check_env_done}
+	@test -d ${R}/mnyaml || \
+	    ( cd ${R} && git clone mkushnir@big-1:development/mnyaml )
+	@cd ${R}/mnyaml && git pull
+	@touch ${_mnyaml_fetch_done}
+
+${_mnyaml_setup_init_done}: ${_mnyaml_fetch_done}
+	@cd ${R}/mnyaml && make distclean || true
+	@cd ${R}/mnyaml && ./setup-env init
+	@touch ${_mnyaml_setup_init_done}
+
+${_mnyaml_setup_dev_done}: ${_mnyaml_setup_init_done}
+	@cd ${R}/mnyaml && make distclean || true
+	@cd ${R}/mnyaml && ./setup-env dev
+	@touch ${_mnyaml_setup_dev_done}
+
+${_mnyaml_setup_dev_ndebug_done}: ${_mnyaml_setup_init_done}
+	@cd ${R}/mnyaml && make distclean || true
+	@cd ${R}/mnyaml && ./setup-env dev-ndebug
+	@touch ${_mnyaml_setup_dev_ndebug_done}
+
+${_mnyaml_build_done}: ${_mnyaml_fetch_done}
+	@cd ${R}/mnyaml && make
+	@touch ${_mnyaml_build_done}
+
+${_mnyaml_install_done}: ${_mnyaml_fetch_done}
+	@cd ${R}/mnyaml && make install
+	@touch ${_mnyaml_install_done}
+
+${_mnyaml_init_done}: ${_mnyaml_setup_init_done} ${_mnyaml_install_done}
+	@echo making $@ ...
+	@touch ${_mnyaml_init_done}
+
+mnyaml-init: mncommon-init ${_mnyaml_init_done}
+	@echo $@ done
+
+${_mnyaml_dev_done}: ${_mnyaml_setup_dev_done} ${_mnyaml_install_done}
+	@echo making $@ ...
+	@touch ${_mnyaml_dev_done}
+
+mnyaml-dev: mncommon-dev ${_mnyaml_dev_done}
+	@echo $@ done
+
+${_mnyaml_dev_ndebug_done}: ${_mnyaml_setup_dev_ndebug_done} ${_mnyaml_install_done}
+	@echo making $@ ...
+	@touch ${_mnyaml_dev_ndebug_done}
+
+mnyaml-dev-ndebug: mncommon-dev-ndebug ${_mnyaml_dev_ndebug_done}
+	@echo $@ done
+
+mnyaml-clean: ${_check_env_done}
+	@echo making $@
+	@cd ${R}/mnyaml && make clean
+	@rm -Rf ${_mnyaml_build_done}
+
+mnyaml-purge: clean-check-env
+	@echo making $@
+	@rm -Rf "${R}/mnyaml" ${_mnyaml_done}
+

@@ -39,11 +39,11 @@ testing:
         vm-105:
         #vm-132:
         #vm-133:
-        #vm-148:
+        vm-148:
         #vm-149:
 
 dev:
     hosts:
-        vm-101:
+        vm-105:
         vm-132:
         vm-148:

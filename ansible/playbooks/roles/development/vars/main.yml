@@ -3,6 +3,8 @@ mydeps:
       name: libyaml
     - 
       name: libev
+    - 
+      name: graphviz
 
 mnbase:
     - 
@@ -18,9 +20,11 @@ mnbase:
 
 mnextra:
     - 
+      name: mnspinfo
+    - 
       name: mnprotobuf
     - 
-      name: mnspinfo
+      name: mnmath
     - 
       name: mnyaml
     - 
@@ -34,6 +38,9 @@ mnproto:
       name: mnfcgi
     - 
       name: mnredis
+    # stalled
+    #- 
+    #  name: mnsip
 
 mndb:
     - 
@@ -53,10 +60,8 @@ mntest:
     - 
       name: test-pcap
     - 
-      name: mnsip
-    - 
-      name: mnmath
-    - 
       name: mnann
+    - 
+      name: mnwm
 
 

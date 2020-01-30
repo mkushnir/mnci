@@ -99,6 +99,8 @@ include Makefile.mncommon
 include Makefile.mnl4c
 include Makefile.mnthr
 include Makefile.mnapp
-include Makefile.mnlipc
+include Makefile.mnyaml
 include Makefile.mnspinfo
 include Makefile.mnprotobuf
+include Makefile.mnmath
+include Makefile.mnlipc

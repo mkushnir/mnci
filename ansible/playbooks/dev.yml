@@ -59,31 +59,37 @@
               accept_hostkey: yes
           with_items: "{{ mntest }}"
 
-        - name: setup-env init
+        - name: setup-env init mn(base|extra|proto)
           tags:
               - development-init
           shell: PATH=$HOME/bin:$PATH; cd $HOME/development/{{ item['name'] }} && ./setup-env init
-          with_items: "{{ mnbase + mnextra }}"
+          with_items: "{{ mnbase + mnextra + mnproto }}"
 
 
-        - name: setup-env dev
+        - name: setup-env dev mn(base|extra|proto)
           tags:
               - development-dev
           shell: PATH=$HOME/bin:$PATH; cd $HOME/development/{{ item['name'] }} && ./setup-env {{ item.get('dev', 'dev') }}
-          with_items: "{{ mnbase + mnextra }}"
+          with_items: "{{ mnbase + mnextra + mnproto }}"
 
 
-        - name: make clean
+        - name: make clean mn(base|extra|proto)
           tags:
               - development-clean
           shell: PATH=$HOME/bin:$PATH; cd $HOME/development/{{ item['name'] }} && make clean
-          with_items: "{{ mnbase + mnextra }}"
+          with_items: "{{ mnbase + mnextra + mnproto }}"
 
-        - name: make install
+        - name: make install mn(base|extra|proto)
           tags:
               - development-install
           shell: PATH=$HOME/bin:$PATH; cd $HOME/development/{{ item['name'] }} && make install
-          with_items: "{{ mnbase + mnextra }}"
+          with_items: "{{ mnbase + mnextra + mnproto }}"
+
+        - name: make uninstall mn(base|extra|proto)
+          tags:
+              - development-uninstall
+          shell: PATH=$HOME/bin:$PATH; cd $HOME/development/{{ item['name'] }} && make uninstall
+          with_items: "{{ mnbase + mnextra + mnproto }}"
 
         - name: purge installed
           tags:

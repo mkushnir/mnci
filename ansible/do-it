@@ -12,3 +12,7 @@ elif test "$cmd" = dev
 then
     ansible-playbook -b -i inventory --limit "$mylimit" playbooks/dev.yml $*
 fi
+
+# ./do-it dev --limit vm-105 --tags gitup-local,mnbase,mnextra,mnproto --skip-tags mndb,mntest
+# ./do-it dev --limit vm-105 --list-tasks
+# ./do-it dev --limit vm-105 --tags development-install

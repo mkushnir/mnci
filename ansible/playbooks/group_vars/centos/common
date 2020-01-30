@@ -11,6 +11,7 @@ mndeps:
     - libev-devel
     - flex-devel
     - zlib-devel
+    - graphviz-devel
 appdeps:
     - libpcap-devel
 

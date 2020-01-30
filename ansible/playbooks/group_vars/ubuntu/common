@@ -8,3 +8,4 @@ editor: vim
 mndeps:
     - libyaml-dev
     - libev-dev
+    - graphviz-dev

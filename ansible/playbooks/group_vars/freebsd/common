@@ -12,6 +12,7 @@ editor: vim-console
 
 mndeps:
     - libyaml
+    - graphviz
 
 appdeps:
     - ffmpeg

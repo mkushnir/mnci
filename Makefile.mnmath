@@ -1,0 +1,74 @@
+_mnmath_fetch_done=${BUILDROOT}/.mnmath-fetch.done
+_mnmath_setup_init_done=${BUILDROOT}/.mnmath-setup-init.done
+_mnmath_setup_dev_done=${BUILDROOT}/.mnmath-setup-dev.done
+_mnmath_setup_dev_ndebug_done=${BUILDROOT}/.mnmath-setup-dev-ndebug.done
+_mnmath_build_done=${BUILDROOT}/.mnmath-build.done
+_mnmath_install_done=${BUILDROOT}/.mnmath-install.done
+_mnmath_init_done=${BUILDROOT}/.mnmath-init.done
+_mnmath_dev_done=${BUILDROOT}/.mnmath-dev.done
+_mnmath_dev_ndebug_done=${BUILDROOT}/.mnmath-dev-ndebug.done
+_mnmath_done=${BUILDROOT}/.mnmath.done
+
+
+#
+# mnmath
+#
+${_mnmath_fetch_done}: ${_check_env_done}
+	@test -d ${R}/mnmath || \
+	    ( cd ${R} && git clone mkushnir@big-1:development/mnmath )
+	@cd ${R}/mnmath && git pull
+	@touch ${_mnmath_fetch_done}
+
+${_mnmath_setup_init_done}: ${_mnmath_fetch_done}
+	@cd ${R}/mnmath && make distclean || true
+	@cd ${R}/mnmath && ./setup-env init
+	@touch ${_mnmath_setup_init_done}
+
+${_mnmath_setup_dev_done}: ${_mnmath_setup_init_done}
+	@cd ${R}/mnmath && make distclean || true
+	@cd ${R}/mnmath && ./setup-env dev
+	@touch ${_mnmath_setup_dev_done}
+
+${_mnmath_setup_dev_ndebug_done}: ${_mnmath_setup_init_done}
+	@cd ${R}/mnmath && make distclean || true
+	@cd ${R}/mnmath && ./setup-env dev-ndebug
+	@touch ${_mnmath_setup_dev_ndebug_done}
+
+${_mnmath_build_done}: ${_mnmath_fetch_done}
+	@cd ${R}/mnmath && make
+	@touch ${_mnmath_build_done}
+
+${_mnmath_install_done}: ${_mnmath_fetch_done}
+	@cd ${R}/mnmath && make install
+	@touch ${_mnmath_install_done}
+
+${_mnmath_init_done}: ${_mnmath_setup_init_done} ${_mnmath_install_done}
+	@echo making $@ ...
+	@touch ${_mnmath_init_done}
+
+mnmath-init: mncommon-init ${_mnmath_init_done}
+	@echo $@ done
+
+${_mnmath_dev_done}: ${_mnmath_setup_dev_done} ${_mnmath_install_done}
+	@echo making $@ ...
+	@touch ${_mnmath_dev_done}
+
+mnmath-dev: mncommon-dev ${_mnmath_dev_done}
+	@echo $@ done
+
+${_mnmath_dev_ndebug_done}: ${_mnmath_setup_dev_ndebug_done} ${_mnmath_install_done}
+	@echo making $@ ...
+	@touch ${_mnmath_dev_ndebug_done}
+
+mnmath-dev-ndebug: mncommon-dev-ndebug ${_mnmath_dev_ndebug_done}
+	@echo $@ done
+
+mnmath-clean: ${_check_env_done}
+	@echo making $@
+	@cd ${R}/mnmath && make clean
+	@rm -Rf ${_mnmath_build_done}
+
+mnmath-purge: clean-check-env
+	@echo making $@
+	@rm -Rf "${R}/mnmath" ${_mnmath_done}
+

@@ -10,6 +10,7 @@ editor: vim
 mndeps:
     - libyaml
     - libev
+    - graphviz
 appdeps:
     - libpcap
     - ffmpeg
