@@ -1,5 +1,8 @@
 pipeline {
     agent none
+    options {
+        parallelsAlwaysFailFast()
+    }
     stages {
         stage('p0') {
             parallel {
