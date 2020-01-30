@@ -19,7 +19,7 @@ pipeline {
                 stages {
                     stage('sub') {
                         steps {
-                            build job: 'mndev',
+                            build job: 'mndev-test-pipeline',
                             parameters: [
                                 string('name': 'setupenv', 'value': "$mnenv"), string('name': 'module', 'value': "$mnmodule")
                             ]
