@@ -1,0 +1,29 @@
+pipeline {
+    agent none
+    stages {
+        stage('main') {
+            matrix {
+                axes {
+                    axis {
+                        name 'mnenv'
+                        values 'init', 'dev', 'dev-ndebug'
+                    }
+                    axis {
+                        name 'mnmodule'
+                        values 'mndiag', 'mncommon', 'mnl4c', 'mnthr', 'mnapp', 'mnyaml', 'mnspinfo', 'mnprotobuf', 'mnmath', 'mnlipc'
+                    }
+                }
+                stages {
+                    stage('sub') {
+                        steps {
+                            build job: 'mndev',
+                            parameters: [
+                                string('name': 'setupenv', 'value': "$mnenv"), string('name': 'module', 'value': "$mnmodule")
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
