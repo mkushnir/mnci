@@ -10,7 +10,7 @@ pipeline {
                     agent {label 'archlinux'}
                     steps {
                         git credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci'
-                        sshagent(credentials: ['jenkins']) {
+                        sshagent(credentials: ['big-jenkins']) {
                             sh './mndev-platform.sh'
                         }
 
@@ -21,9 +21,9 @@ pipeline {
                 stage('centos') {
                     agent {label 'centos'}
                     steps {
-                        git credentialsId: 'jenkins', url: 'mkushnir@big-1:development/mnci'
+                        git credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci'
 
-                        sshagent(credentials: ['jenkins']) {
+                        sshagent(credentials: ['big-jenkins']) {
                             sh './mndev-platform.sh'
                         }
                     }
@@ -33,7 +33,7 @@ pipeline {
                     agent {label 'freebsd'}
                     steps {
                         git credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci'
-                        sshagent(credentials: ['jenkins']) {
+                        sshagent(credentials: ['big-jenkins']) {
                             sh './mndev-platform.sh'
                         }
                     }
