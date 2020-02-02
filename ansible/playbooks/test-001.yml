@@ -54,6 +54,11 @@
 
         - name: Learn Shell
           shell: /usr/bin/true
+          register: s01
+
+        - debug:
+            var: s01
+
 
 -
     hosts: ubuntu

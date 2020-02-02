@@ -41,17 +41,18 @@ wait_for_start() {
 }
 
 
-bnp=http://big-1:8180/jenkins/job/mndev/build
-bwp=http://big-1:8180/jenkins/job/mndev/buildWithParameters
-pvc=http://big-1:8180/jenkins/pluginManager/prevalidateConfig
-inp=http://big-1:8180/jenkins/pluginManager/installNecessaryPlugins
-ucp=http://big-1:8180/jenkins/updateCenter/site/default/plugin/.../api/json?depth=1
+mbnp=http://big-1:8180/jenkins/job/mndev-matrix/build
+pbnp=http://big-1:8180/jenkins/job/mndev-pipeline/build
+pbwp=http://big-1:8180/jenkins/job/mndev-pipeline/buildWithParameters
+ppvc=http://big-1:8180/jenkins/pluginManager/prevalidateConfig
+pinp=http://big-1:8180/jenkins/pluginManager/installNecessaryPlugins
+pucp=http://big-1:8180/jenkins/updateCenter/site/default/plugin/.../api/json?depth=1
 
 user=admin
 token=11849bbac29f35af1e66fcc95b08c7923f
 
 #set -x
-if test "$1" = run
+if test "$1" = run-pipeline
 then
     #envs="init"
     envs="init dev dev-ndebug"
@@ -64,9 +65,9 @@ then
         do
             echo ======= $env $mod
             #form="{\"parameter\":[{\"name\":\"module\",\"value\":\"$mod\"},{\"name\":\"setupenv\",\"value\":\"$env\"}],\"delay\":10sec}"
-            #curl -q -s --dump-header out --user $user:$token --data-urlencode "json=$form" ${bnp}
+            #curl -q -s --dump-header out --user $user:$token --data-urlencode "json=$form" ${pbnp}
             form="module=${mod}&setupenv=${env}"
-            curl -q -s --dump-header out -X POST --user $user:$token "${bwp}?${form}"
+            curl -q -s --dump-header out -X POST --user $user:$token "${pbwp}?${form}"
             wait_for_start out
         done
     done
@@ -74,15 +75,20 @@ then
     #module=mndiag
     #setupenv=init
     #form="{\"parameter\":[{\"module\":\"$module\"},{\"setupenv\":\"$setupenv\"}]}"
-    #curl -v --dump-header out  --user $user:$token --data-urlencode "json=$form" $bwp
+    #curl -v --dump-header out  --user $user:$token --data-urlencode "json=$form" $pbwp
     #wait_for_start out
+
+elif test "$1" = run-matrix
+then
+    curl -q -s --dump-header out -X POST --user $user:$token "${mbnp}"
+    wait_for_start out
 
 elif test "$1" = validate
 then
     fname=$2
     if test -f "$fname"
     then
-        curl -v --user $user:$token --data @$fname $pvc
+        curl -v --user $user:$token --data @$fname $ppvc
     else
         die 1 "no such file: $fname"
     fi
@@ -92,7 +98,7 @@ then
     fname=$2
     if test -f "$fname"
     then
-        curl -v --user $user:$token --data @$fname $inp
+        curl -v --user $user:$token --data @$fname $pinp
     else
         die 1 "no such file: $fname"
     fi

@@ -1,6 +1,7 @@
 freebsd:
     hosts:
         vm-101:
+        vm-104:
         vm-105:
         vm-pear-101:
         vm-pear-102:
@@ -33,17 +34,15 @@ vm:
     hosts:
         vm-[100:999]:
 
-testing:
+ci:
     hosts:
-        #vm-101:
+        vm-104:
         vm-105:
-        #vm-132:
-        #vm-133:
         vm-148:
-        #vm-149:
+        vm-149:
 
 dev:
     hosts:
         vm-105:
-        vm-132:
         vm-148:
+        vm-149:

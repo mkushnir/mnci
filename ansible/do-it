@@ -1,6 +1,6 @@
 #!/bin/sh
 
-mylimit='testing'
+mylimit='ci'
 cmd=$1
 shift
 
@@ -11,8 +11,21 @@ then
 elif test "$cmd" = dev
 then
     ansible-playbook -b -i inventory --limit "$mylimit" playbooks/dev.yml $*
+
+elif test "$cmd" = test
+then
+    ansible-playbook -b -i inventory --limit "$mylimit" playbooks/test-001.yml $*
 fi
 
+#   setup
+# ./do-it setup --limit vm-104 --tags authkeys -u root -k -- need askpass, install the id_rsa-ansible-test.pub manually
+# ./do-it setup --limit vm-104 --tags bootstrap
+# ./do-it setup --limit vm-104 --tags dev
+# ./do-it setup --limit vm-104 --tags jenkins
+# ./do-it setup --limit vm-104 --tags timesvc
+# ./do-it setup --limit vm-104 --tags timesync
+#
+#   dev
 # ./do-it dev --limit vm-105 --tags gitup-local,mnbase,mnextra,mnproto --skip-tags mndb,mntest
 # ./do-it dev --limit vm-105 --list-tasks
 # ./do-it dev --limit vm-105 --tags development-install

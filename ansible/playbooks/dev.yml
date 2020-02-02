@@ -84,6 +84,14 @@
               - development-install
           shell: PATH=$HOME/bin:$PATH; cd $HOME/development/{{ item['name'] }} && make install
           with_items: "{{ mnbase + mnextra + mnproto }}"
+          register: res
+          changed_when: "' CC ' in res.stdout"
+
+        #- name: DDD
+        #  tags:
+        #      - development-install
+        #  debug:
+        #      var: res
 
         - name: make uninstall mn(base|extra|proto)
           tags:
