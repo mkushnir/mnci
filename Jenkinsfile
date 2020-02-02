@@ -9,7 +9,7 @@ pipeline {
                 stage('archlinux') {
                     agent {label 'archlinux'}
                     steps {
-                        git credentialsId: 'jenkins', url: 'mkushnir@big-1:development/mnci'
+                        git credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci'
 
                         sh '''
                         echo $params.setupenv $params.module
@@ -33,7 +33,7 @@ pipeline {
                 stage('freebsd') {
                     agent {label 'freebsd'}
                     steps {
-                        git credentialsId: 'jenkins', url: 'mkushnir@big-1:development/mnci'
+                        git credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci'
 
                         sh '''
                         echo $params.setupenv $params.module
