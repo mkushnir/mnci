@@ -12,8 +12,16 @@ pipeline {
                         git credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci'
 
                         sh '''
-                        echo $setupenv $module
-                        env
+			export HOME=$WORKSPACE/stage
+			mkdir -p $HOME
+			PATH=$HOME/bin:$PATH
+
+			export BUILDROOT=$WORKSPACE/qwe
+			mkdir -p $BUILDROOT
+
+			echo ./setup-env init
+
+			echo make ${module}-${setupenv}
                         '''
                     }
                 }
@@ -24,8 +32,16 @@ pipeline {
                         git credentialsId: 'jenkins', url: 'mkushnir@big-1:development/mnci'
 
                         sh '''
-                        echo $setupenv $module
-                        env
+			export HOME=$WORKSPACE/stage
+			mkdir -p $HOME
+			PATH=$HOME/bin:$PATH
+
+			export BUILDROOT=$WORKSPACE/qwe
+			mkdir -p $BUILDROOT
+
+			echo ./setup-env init
+
+			echo make ${module}-${setupenv}
                         '''
                     }
                 }
@@ -36,8 +52,16 @@ pipeline {
                         git credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci'
 
                         sh '''
-                        echo $setupenv $module
-                        env
+			export HOME=$WORKSPACE/stage
+			mkdir -p $HOME
+			PATH=$HOME/bin:$PATH
+
+			export BUILDROOT=$WORKSPACE/qwe
+			mkdir -p $BUILDROOT
+
+			echo ./setup-env init
+
+			echo make ${module}-${setupenv}
                         '''
                     }
                 }
