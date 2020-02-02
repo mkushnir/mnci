@@ -9,7 +9,13 @@ pipeline {
                 stage('archlinux') {
                     agent {label 'archlinux'}
                     steps {
-                        git credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci'
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: scm.branches,
+                            doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                            extensions: scm.extensions + [[$class: 'WipeWorkspace']],
+                            userRemoteConfigs: [[credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci']]
+                        ])
                         sshagent(credentials: ['big-jenkins']) {
                             sh './mndev-platform.sh'
                         }
@@ -32,7 +38,13 @@ pipeline {
                 stage('freebsd') {
                     agent {label 'freebsd'}
                     steps {
-                        git credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci'
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: scm.branches,
+                            doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                            extensions: scm.extensions + [[$class: 'WipeWorkspace']],
+                            userRemoteConfigs: [[credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci']]
+                        ])
                         sshagent(credentials: ['big-jenkins']) {
                             sh './mndev-platform.sh'
                         }
