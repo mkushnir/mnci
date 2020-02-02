@@ -12,7 +12,7 @@ pipeline {
                         git credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci'
 
                         sh '''
-                        echo $params.setupenv $params.module
+                        echo $setupenv $module
                         env
                         '''
                     }
@@ -24,7 +24,7 @@ pipeline {
                         git credentialsId: 'jenkins', url: 'mkushnir@big-1:development/mnci'
 
                         sh '''
-                        echo $params.setupenv $params.module
+                        echo $setupenv $module
                         env
                         '''
                     }
@@ -36,7 +36,7 @@ pipeline {
                         git credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci'
 
                         sh '''
-                        echo $params.setupenv $params.module
+                        echo $setupenv $module
                         env
                         '''
                     }
