@@ -11,18 +11,7 @@ pipeline {
                     steps {
                         git credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci'
 
-                        sh '''
-			export HOME=$WORKSPACE/stage
-			mkdir -p $HOME
-			PATH=$HOME/bin:$PATH
-
-			export BUILDROOT=$WORKSPACE/qwe
-			mkdir -p $BUILDROOT
-
-			echo ./setup-env init
-
-			echo make ${module}-${setupenv}
-                        '''
+                        sh './mndev-platform.sh'
                     }
                 }
                 /*
@@ -31,18 +20,7 @@ pipeline {
                     steps {
                         git credentialsId: 'jenkins', url: 'mkushnir@big-1:development/mnci'
 
-                        sh '''
-			export HOME=$WORKSPACE/stage
-			mkdir -p $HOME
-			PATH=$HOME/bin:$PATH
-
-			export BUILDROOT=$WORKSPACE/qwe
-			mkdir -p $BUILDROOT
-
-			echo ./setup-env init
-
-			echo make ${module}-${setupenv}
-                        '''
+                        sh './mndev-platform.sh'
                     }
                 }
                 */
@@ -50,19 +28,7 @@ pipeline {
                     agent {label 'freebsd'}
                     steps {
                         git credentialsId: 'big-jenkins', url: 'mkushnir@big-1:development/mnci'
-
-                        sh '''
-			export HOME=$WORKSPACE/stage
-			mkdir -p $HOME
-			PATH=$HOME/bin:$PATH
-
-			export BUILDROOT=$WORKSPACE/qwe
-			mkdir -p $BUILDROOT
-
-			echo ./setup-env init
-
-			echo make ${module}-${setupenv}
-                        '''
+                        sh './mndev-platform.sh'
                     }
                 }
             }
