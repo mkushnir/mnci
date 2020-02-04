@@ -24,6 +24,8 @@ archlinux:
     hosts:
         vm-148:
         vm-149:
+        vm-pear-149:
+        vm-pear-150:
 
 
 vm_pear:
@@ -40,6 +42,10 @@ ci:
         vm-105:
         vm-148:
         vm-149:
+        vm-pear-101:
+        vm-pear-102:
+        vm-pear-149:
+        vm-pear-150:
 
 dev:
     hosts:

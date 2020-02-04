@@ -68,7 +68,7 @@
   register: cmdres
   changed_when: cmdres.stdout_lines[0] == '200 OK'
 
-- name: Setup time service
+- name: Synchronize time
   tags: timesync
   when: timesync is defined
   command: "{{ timesync }}"

@@ -13,17 +13,37 @@
   tags:
       - reboot
   command: "/sbin/shutdown -r +1 Reboot by ansible"
-  when: ansible_facts['distribution'] in ('FreeBSD',)
-  #when: '"freebsd" in group_names'
+  #when: ansible_facts['distribution'] in ('FreeBSD',)
+  when: '"freebsd" in group_names'
   register: rbazf
+
 
 - name: Reboot
   tags:
       - reboot
   become: true
   raw: "/sbin/shutdown -r +1 Reboot by ansible"
-  when: ansible_facts['distribution'] in ('Ubuntu', 'CentOS', 'Archlinux')
+  #when: ansible_facts['distribution'] in ('Ubuntu', 'CentOS', 'Archlinux')
+  when: '"freebsd" not in group_names'
   register: rbazu
+
+
+- name: Shutdown
+  tags:
+      - shutdown
+  command: "/sbin/shutdown -p +1 Shutdown by ansible"
+  #when: ansible_facts['distribution'] in ('FreeBSD',)
+  when: '"freebsd" in group_names'
+
+
+- name: Shutdown
+  tags:
+      - shutdown
+  become: true
+  raw: "/sbin/shutdown -P +1 Shutdown by ansible"
+  #when: ansible_facts['distribution'] in ('Ubuntu', 'CentOS', 'Archlinux')
+  when: '"freebsd" not in group_names'
+
 
 - name: Report
   tags:
